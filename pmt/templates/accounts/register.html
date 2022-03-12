@@ -1,0 +1,42 @@
+{% extends "accounts/base.html" %}
+{% block title %}<title>PMT | Register</title>{% endblock %}
+{% load crispy_forms_tags %}
+{% block body %}
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                {# Nested Row within Card Body #}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                {# Print messages #} {# ToDo: Find a better way to print messages #}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p>{{ message }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <form class="user" method="post">
+                                {% csrf_token %}
+                                {{ register_form.username.label}}
+                                {{ register_form.username}}
+                                <input type="submit" class="btn btn-primary btn-user btn-block" name="submit"
+                                       id="submit"
+                                       value="Register Account">
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="forgot_password">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="login">Already have an account? Login!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends "dashboard/base.html" %}
+{% block title %}<title>PMT | Home</title>{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        {# Action menu start #}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            File
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#upload_event_log" data-toggle="modal">Upload Event
+                                Log</a>
+                            <a class="dropdown-item" href="#upload_process_model" data-toggle="modal">Upload Process
+                                Model</a>
+                            <a class="dropdown-item" href="{% url 'view_event_logs' %}">View Event Logs</a>
+                            <a class="dropdown-item" href="{% url 'view_process_models' %}">View Process
+                                Models</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Discovery
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#discover_process_model" data-toggle="modal">Discover New
+                                Model</a>
+                            <a class="dropdown-item" href="#visualize_process_model" data-toggle="modal">Visualize
+                                Discovered
+                                Model</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Conformance
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Statistics
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#select_event_log" data-toggle="modal">Performance Dashboard</a>
+                            <a class="dropdown-item" href="#">Social Network Analysis</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    </div>
+    <!-- End of Main Content -->
+    {# Modals Start #}
+
+    {# Discover Process Modal Modal Start #}
+    <div id="discover_process_model" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Discover a process model</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                {# Modal body #}
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ discover_process_form|crispy }}
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <input type="submit" name="submitDiscover" id="submitDiscover" class="btn btn-success"
+                           value="Discover">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {# Discover Process Modal Modal Start #}
+
+    {# Visualize Process Model Modal Start #}
+    <div id="visualize_process_model" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Visualize a process model</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                {# Modal body #}
+                <div class="modal-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ view_process_model_form|crispy }}
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <input type="submit" name="submitVisualize" id="submitVisualize" class="btn btn-success"
+                           value="View">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {# Visualize Process Model Modal End #}
+
+    {# Upload Process Model Modal Start #}
+    <div id="upload_process_model" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload a process model</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                {# Modal body #}
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ upload_process_model_form|crispy }}
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <input type="submit" name="submitRender" id="submitRender" class="btn btn-success" value="View">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {# Upload Process Model Modal End #}
+
+    {# Upload Event Log Start #}
+    <div id="upload_event_log" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload an Event Log</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                {# Modal body #}
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ upload_event_log_form|crispy }}
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" name="submitUploadEventLog" value="Upload">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {# Upload Event Log End #}
+
+    {# Select Event Log Start #}
+    <div id="select_event_log" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">View Event Log Statistics</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                {# Modal body #}
+                <div class="modal-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ select_event_log_form|crispy }}
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" name="submitSelectEventLog" value="Select">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {# Select Event Log End #}
+    {# Modals End #}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}<title>PMT | Event Logs</title>{% endblock %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Event Logs</h1>
+        </div>
+
+
+        {# Table presenting event logs #}
+        <table id="table_event_logs" class="display">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Owner ID</th>
+                <th>Name</th>
+                <th>File</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for log in event_logs %}
+                <tr>
+                    <td>{{ log.event_log_id }}</td>
+                    <td>{{ log.event_log_owner_id }}</td>
+                    <td>{{ log.event_log_name }}</td>
+                    <td><a href="{{ log.event_log_file.url }}" class="btn btn-primary btn-sm">Download</a>
+                    </td>
+                    <td>
+                        <a href="#delete_event_log" class="btn btn-danger btn-sm" data-toggle="modal">Delete</a>
+                        {# Delete Event log Modal #}
+                        <div id="delete_event_log" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    {# Modal Header #}
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete an Event Log</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    {# Modal footer #}
+                                    <div class="modal-footer">
+                                        <form method="post" action="{% url 'delete_event_log' log.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel
+                                        </button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+
+{% endblock %}

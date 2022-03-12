@@ -1,0 +1,122 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}<title>PMT | Process Model Visualization</title>{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        {# Menu start #}
+        <section id="menu">
+            <div class="row">
+                {# Visualization Settings #}
+                <div class="col-lg-2  border border-primary pt-lg-2 ">
+                    <h6 class="text-center font-weight-bold">Visualization Settings</h6>
+                    <div class="form-group">
+                        <select class="form-control form-control-sm" name="notations" id="notations">
+                            <option value="" disabled selected hidden>Notation</option>
+                            <option value="processMap">Process Map</option>
+                            <option value="bpmn">BPMN</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control form-control-sm" name="perspective" id="perspective">
+                            <
+                            <option value="" disabled selected hidden>Perspective</option>
+                            <option value="activities">Activites</option>
+                            <option value="resources">Resources</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control form-control-sm" name="frequency" id="frequency">
+                            <option value="" disabled selected hidden>Frequency</option>
+                            <option value="case">Case</option>
+                            <option value="relativeCase">Relative Case</option>
+                            <option value="total">Total</option>
+                            <option value="Average">Average</option>
+                            <option value="Median">Median</option>
+                            <option value="Max">Max</option>
+                            <option value="Min">Min</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control form-control-sm" name="duration" id="duration">
+                            <option value="" disabled selected hidden>Duration</option>
+                            <option value="total">Total</option>
+                            <option value="Average">Average</option>
+                            <option value="Median">Median</option>
+                            <option value="Max">Max</option>
+                            <option value="Min">Min</option>
+                        </select>
+                    </div>
+                </div>
+                {# Abstraction Settings #}
+                <div class="col-lg-3 border border-primary pt-lg-2">
+                    <h6 class="text-center font-weight-bold">Abstraction Settings</h6>
+                    <select class="form-control form-control-sm" name="duration" id="duration">
+                        <option value="" disabled selected hidden>Abstract By</option>
+                        <option value="caseFrequency">Case Frequency</option>
+                        <option value="averageDuration">Average Duration</option>
+                    </select>
+                    <div class="form-group">
+                        <label for="Nodes">Nodes</label>
+                        <input class = "form-control-range" type="range">
+                    </div>
+                    <div class="form-group">
+                        <label for="Nodes">Arcs</label>
+                        <input class = "form-control-range" type="range">
+                    </div>
+                    <div class="form-group">
+                        <label for="Nodes">Parallelism</label>
+                        <input class = "form-control-range" type="range">
+                    </div>
+                </div>
+                {# Log Statistics #}
+                <div class="col-lg-4 border border-primary pt-lg-2">
+                    <h6 class="text-center font-weight-bold">Log Statistics</h6>
+                    <div class="row">
+                        <div class="col-lg-3 text-center">
+                            <p>Cases</p>
+                            <p class="mb-1">100%</p>
+                            <p>101/101</p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <p>Case Var.</p>
+                            <p class="mb-1">100%</p>
+                            <p>16/16</p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <p>Activity Inst.</p>
+                            <p class="mb-1">100%</p>
+                            <p>697/697</p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <p>Activities</p>
+                            <p class="mb-1">100%</p>
+                            <p>9/9</p>
+                        </div>
+                    </div>
+
+                </div>
+                {# Temportal Statistics #}
+                <div class="col-lg-3 border border-primary pt-lg-2">
+                    <h6 class="text-center font-weight-bold">Temporal Statistics</h6>
+                    <div class="row">
+                        <div class="col-lg-6 text-center">
+                            <p>Case Duration</p>
+                            <p class="mb-1">Min 1.07 days</p>
+                            <p class="mb-1">Median 1.39 wks</p>
+                            <p class="mb-1">Average 1.37 wks</p>
+                            <p class="mb-1">Max 2.44 wks</p>
+
+                        </div>
+                        <div class="col-lg-6 text-center">
+                            <p>Log Timeframe</p>
+                            <p class="mb-1">Start <br>02 Jan 17, 11:40 </p>
+                            <p class="mb-1">End <br>31 May 17, 14:16 </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {# Menu end #}
+    </div>
+    </div>
+{% endblock %}
