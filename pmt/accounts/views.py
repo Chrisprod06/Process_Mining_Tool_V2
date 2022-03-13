@@ -1,32 +1,78 @@
-from django.shortcuts import render
-from django.shortcuts import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.auth.models import User, auth
+from django.shortcuts import redirect, render
 
-from .forms import CreateUserForm
 # Create your views here.
-def register(request) -> HttpResponse:
-    """View for handling user registration"""
+
+
+def register(request):
+    """Function for handing user registration"""
+    redirect_register_url = "/accounts/register"
+    redirect_login_url = "/accounts/login"
     template = "accounts/register.html"
-    register_form = CreateUserForm()
 
     if request.method == "POST":
-        register_form = CreateUserForm(request.POST)
-        if register_form.is_valid():
-            register_form.save()
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        email = request.POST["email"]
+        username = email
+        password = request.POST["password"]
+        repeat_password = request.POST["repeat_password"]
+
+        # Check if password is same with repeat password, and email is unique then continue
+        if password != repeat_password:
+            messages.error(request, "Passwords must match!")
+            return redirect(redirect_register_url)
+        else:
+            if User.objects.filter(email=email).exists():
+                messages.error(request, "Email already exists!")
+                return redirect(redirect_register_url)
+            else:
+                user = User.objects.create_user(
+                    username=username,
+                    password=password,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                )
+                user.save()
+                messages.success(request, "Account created successfully!")
+                return redirect(redirect_login_url)
+    else:
+        return render(request, template)
 
 
-    context = {"register_form": register_form}
-
-    return render(request, template, context)
-
-
-def login(request) -> HttpResponse:
-    """View for handling user login"""
-    context = {}
+def login(request):
+    """Function for handling user login"""
+    redirect_login_url = "/accounts/login"
+    redirect_login_success = "/"
     template = "accounts/login.html"
-    return render(request, template, context)
+
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
+
+        user = auth.authenticate(username=email, password=password)
+
+        if user is None:
+            messages.error(request, "Wrong credentials! Please try again.")
+            return redirect(redirect_login_url)
+
+        else:
+            auth.login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect(redirect_login_success)
+
+    return render(request, template)
+
+
+def forgot_password(request):
+    template = "accounts/forgot_password.html"
+    return render(request, template)
 
 
 def logout(request):
-    """View for handling user logout"""
-    pass
+    """Function for logging out the user"""
+    redirect_url = "/accounts/login"
+    auth.logout(request)
+    return redirect(redirect_url)

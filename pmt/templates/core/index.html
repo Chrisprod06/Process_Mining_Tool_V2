@@ -1,4 +1,4 @@
-{% extends "dashboard/base.html" %}
+{% extends "core/base.html" %}
 {% block title %}<title>PMT | Home</title>{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -23,7 +23,7 @@
                                 Log</a>
                             <a class="dropdown-item" href="#upload_process_model" data-toggle="modal">Upload Process
                                 Model</a>
-                            <a class="dropdown-item" href="{% url 'view_event_logs' %}">View Event Logs</a>
+                            <a class="dropdown-item" href="">View Event Logs</a>
                             <a class="dropdown-item" href="{% url 'view_process_models' %}">View Process
                                 Models</a>
                         </div>
