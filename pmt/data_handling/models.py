@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+
+
 # Create your models here.
 class EventLog(models.Model):
     """Model to describe event logs"""
@@ -17,3 +19,5 @@ class EventLog(models.Model):
     def delete(self, *args, **kwargs):
         self.event_log_file.delete()
         super().delete(*args, **kwargs)
+
+

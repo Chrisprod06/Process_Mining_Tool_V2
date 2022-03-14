@@ -19,12 +19,8 @@
                             File
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#upload_event_log" data-toggle="modal">Upload Event
-                                Log</a>
-                            <a class="dropdown-item" href="#upload_process_model" data-toggle="modal">Upload Process
-                                Model</a>
-                            <a class="dropdown-item" href="">View Event Logs</a>
-                            <a class="dropdown-item" href="{% url 'view_process_models' %}">View Process
+                            <a class="dropdown-item" href="{% url 'data_handling:event_log_list' %}">View Event Logs</a>
+                            <a class="dropdown-item" href="">View Process
                                 Models</a>
                         </div>
                     </li>
@@ -59,7 +55,8 @@
                             Statistics
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#select_event_log" data-toggle="modal">Performance Dashboard</a>
+                            <a class="dropdown-item" href="#select_event_log" data-toggle="modal">Performance
+                                Dashboard</a>
                             <a class="dropdown-item" href="#">Social Network Analysis</a>
                         </div>
                     </li>

@@ -96,7 +96,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }} {{ user.last_name }}</span>
                             {% endif %}
                             <img class="img-profile rounded-circle"
-                                 src="{% static 'dashboard/img/undraw_profile.svg' %}">
+                                 src="{% static 'img/undraw_profile.svg' %}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -164,7 +164,7 @@
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Logout</a>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
