@@ -10,9 +10,9 @@ from .forms import EventLogForm
 @login_required(login_url="/accounts/login")
 def event_log_list(request):
     """View for displaying event logs and actions"""
-    logs = EventLog.objects.all()
+    event_logs = EventLog.objects.all()
     template = "data_handling/event_log_list.html"
-    context = {"event_logs": logs}
+    context = {"event_logs": event_logs}
     return render(request, template, context)
 
 

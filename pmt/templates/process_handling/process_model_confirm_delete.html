@@ -1,0 +1,21 @@
+{# Delete Process model Modal #}
+<div id="delete_process_model" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {# Modal Header #}
+            <div class="modal-header">
+                <h4 class="modal-title">Delete a Process Model</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            {# Modal footer #}
+            <div class="modal-footer">
+                <form method="post" action="{% url 'process_handling:process_model_delete' model.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
