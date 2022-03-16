@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
 from django.contrib import messages
-from .models import ProcessModel
-from .forms import ProcessModelForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
+from .forms import ProcessModelForm, DiscoverProcessModelForm
+from .models import ProcessModel
 
 # Create your views here.
 
+from ..core import pm4py_discovery
 
 @login_required(login_url="/accounts/login")
 def process_model_list(request):
@@ -74,3 +75,41 @@ def process_model_delete(request, pk):
             process_model.delete()
             messages.success(request, "Process Model deleted successfully!")
     return redirect(reverse_lazy("process_handling:process_model_list"))
+
+
+@login_required(login_url="/accounts/login")
+def process_model_discover(request):
+    """View for handling process model discovery"""
+    template = "process_handling/process_model_discover.html"
+    discover_process_model_form = DiscoverProcessModelForm()
+
+
+    if request.method == "POST":
+        discover_process_model_form = DiscoverProcessModelForm(request.POST)
+        if discover_process_model_form.is_valid():
+            # Get process model details
+            new_process_model = discover_process_model_form.save(commit=False)
+            event_log_name = str(new_process_model.process_model_log_name)
+            process_model_name = new_process_model.process_model_name
+            # Process model discovery
+
+            pm4py_discovery.process_model_discovery(event_log_name, process_model_name)
+            # Save new model
+            new_process_model.process_model_pnml_file = (
+                    "process_models/pnml/" + process_model_name + ".pnml"
+            )
+            new_process_model.process_model_bpmn_file = (
+                    "process_models/bpmn/" + process_model_name + ".bpmn"
+            )
+            new_process_model.process_model_pnml_image = (
+                    "exported_pngs/pnml/" + process_model_name + ".png"
+            )
+            new_process_model.process_model_bmpn_image = (
+                    "exported_pngs/bpmn/" + process_model_name + ".png"
+            )
+            # Save the process model
+            new_process_model.save()
+            discover_process_model_form.save_m2m()
+            return redirect(reverse_lazy("core:index"))
+    context = {"form": discover_process_model_form}
+    return render(request, template, context)

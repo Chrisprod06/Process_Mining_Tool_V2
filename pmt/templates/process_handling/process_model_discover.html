@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}<title>PMT | Discover New Process Model</title>{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Upload/Update Process Model</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-success" value="Submit" name="submit"
+                           id="submit">
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+
+
+{% endblock %}
