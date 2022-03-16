@@ -8,7 +8,8 @@ from .models import ProcessModel
 
 # Create your views here.
 
-from ..core import pm4py_discovery
+from core import pm4py_discovery
+
 
 @login_required(login_url="/accounts/login")
 def process_model_list(request):
@@ -83,7 +84,6 @@ def process_model_discover(request):
     template = "process_handling/process_model_discover.html"
     discover_process_model_form = DiscoverProcessModelForm()
 
-
     if request.method == "POST":
         discover_process_model_form = DiscoverProcessModelForm(request.POST)
         if discover_process_model_form.is_valid():
@@ -110,6 +110,6 @@ def process_model_discover(request):
             # Save the process model
             new_process_model.save()
             discover_process_model_form.save_m2m()
-            return redirect(reverse_lazy("core:index"))
+            return redirect(reverse_lazy("process_handling:process_model_list"))
     context = {"form": discover_process_model_form}
     return render(request, template, context)

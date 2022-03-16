@@ -38,13 +38,15 @@ class ProcessModel(models.Model):
         upload_to="exported_pngs/pnml", null=True
     )
     process_model_bpmn_png = models.ImageField(
-        upload_to="exported_pngs/pnml", null=True
+        upload_to="exported_pngs/bpmn", null=True
     )
 
     def __int__(self):
         return self.process_model_id
 
     def delete(self, *args, **kwargs):
-        self.process_model_file.delete()
-        self.process_model_image.delete()
+        self.process_model_pnml_file.delete()
+        self.process_model_bpmn_file.delete()
+        self.process_model_pnml_png.delete()
+        self.process_model_bpmn_png.delete()
         super().delete(*args, **kwargs)

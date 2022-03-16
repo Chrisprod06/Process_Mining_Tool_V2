@@ -36,7 +36,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'core:index' %}">
             <div class="sidebar-brand-text mx-3">Process Mining Tool</div>
         </a>
 
@@ -45,9 +45,63 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index' %}">
+            <a class="nav-link" href="{% url 'core:index' %}">
                 <i class="fas fa-home"></i>
                 <span>Home</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Data Handling
+        </div>
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'data_handling:event_log_list' %}">
+                <i class="fas fa-file-alt"></i>
+                <span>Event Logs</span></a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Process Handling
+        </div>
+
+         <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'process_handling:process_model_list' %}">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Process Models</span></a>
+        </li>
+
+
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Conformance Checking</span></a>
+        </li>
+
+         <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics"
+               aria-expanded="true" aria-controls="collapseStatistics">
+                <i class="fab fa-cc-discover"></i>
+                <span>Statistics</span>
+            </a>
+            <div id="collapseStatistics" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="#">Performance Dashboard</a>
+                    <a class="collapse-item" href="#">Social Network Analysis</a>
+                </div>
+            </div>
         </li>
 
         <!-- Divider -->
