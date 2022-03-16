@@ -21,4 +21,5 @@ class CustomEventLogModelChoiceField(forms.ModelChoiceField):
 
 class SelectEventLogForm(forms.Form):
     """Form used for selecting event log"""
+
     event_log = CustomEventLogModelChoiceField(queryset=EventLog.objects.all())

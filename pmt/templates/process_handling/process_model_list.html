@@ -8,9 +8,21 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Process Models</h1>
-            <a href="{% url 'process_handling:process_model_create' %}" class="btn btn-primary"> Upload new Process
-                Model</a>
+            <div class="row">
+                <div>
+                    <a href="{% url 'process_handling:process_model_create' %}" class="btn btn-primary"> Upload new
+                        Process
+                        Model</a>
+                </div>
+                <div class=ml-3>
+                    <a href="{% url 'process_handling:process_model_discover' %}" class="btn btn-primary">
+                        Discover new Process
+                        Model</a>
+                </div>
+            </div>
         </div>
+
+
         {# Table presenting process models #}
         <table id="table_process_models" class="display">
             <thead>

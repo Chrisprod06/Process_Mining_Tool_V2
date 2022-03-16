@@ -19,5 +19,3 @@ class EventLog(models.Model):
     def delete(self, *args, **kwargs):
         self.event_log_file.delete()
         super().delete(*args, **kwargs)
-
-
