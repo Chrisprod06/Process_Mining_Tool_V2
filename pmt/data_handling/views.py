@@ -21,7 +21,11 @@ def event_log_detail(request, pk):
     """View to handle providing details for a single event log"""
     event_log = EventLog.objects.get(pk=pk)
     template = "data_handling/event_log_detail.html"
-    context = {"event_log": event_log}
+    file_path = "media/" + str(event_log.event_log_file)
+    file = open(file_path, "r")
+    event_log_file_content = file.read()
+    context = {"event_log": event_log,
+               "event_log_file_content": event_log_file_content}
     return render(request, template, context)
 
 
