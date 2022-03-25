@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 
 from .models import EventLog
-from .forms import EventLogForm
+from .forms import EventLogForm, SelectFilter
 
 
 @login_required(login_url="/accounts/login")
@@ -76,3 +76,13 @@ def event_log_delete(request, pk):
             event_log.delete()
             messages.success(request, "Event Log deleted successfully!")
     return redirect(reverse_lazy("data_handling:event_log_list"))
+
+
+@login_required(login_url="/accounts/login")
+def select_filters(request):
+    """View to handle filtering"""
+    select_filters_form = SelectFilter()
+    template = ""
+
+    context= {"select_filters_form": select_filters_form}
+    return render(request,template,context)

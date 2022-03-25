@@ -9,6 +9,9 @@ from pm4py.statistics.sojourn_time.log import get as soj_time_get
 from pm4py.statistics.traces.generic.log import case_arrival, case_statistics
 from pm4py.statistics.concurrent_activities.log import get as conc_act_get
 from pm4py.statistics.eventually_follows.log import get as efg_get
+
+from pm4py.statistics.traces.generic.log import case_statistics
+
 from pm4py.visualization.graphs import visualizer as graphs_visualizer
 
 from pm4py.util import constants
@@ -16,37 +19,50 @@ from pm4py.util.business_hours import BusinessHours
 
 from data_handling.models import EventLog
 
+from statistics import median,
 
 def calculate_numeric_statistics(event_log_id) -> dict:
     """Function that calculates different statistics available in pm4py"""
-    statistics_results = {}
+
     # Find log file path
     selected_event_log = EventLog.objects.get(pk=event_log_id)
     selected_event_log_file = selected_event_log.event_log_file
     selected_event_log_path = "media/" + str(selected_event_log_file)
 
     # Import xes file
-    event_log_file_object = xes_importer.apply(selected_event_log_path)
+    event_log = xes_importer.apply(selected_event_log_path)
 
+    # Calculate cases duration
+    all_cases_duration = case_statistics.get_all_case_durations(event_log, parameters={
+        case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
     # Calculate number of cases
-
+    count_cases = len(all_cases_duration)
     # Calculate number of case variants
-
+    variants_count = case_statistics.get_variant_statistics(event_log)
+    variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
     # Calculate activity instances
 
     # Calculate number of activities
 
     # Calculate case duration
     # Min
+    min_case_duration = min(all_cases_duration)
     # Median
+    median_case_duration = median(all_cases_duration)
     # Average
+    average_case_duration  = sum(list)/len(list)
     # Max
+    max_case_duration = max(all_cases_duration)
 
     # Calculate Log timeframe
     # Start
     # End
 
-    # Calculate
+    statistics_results = {
+        "all_cases_durations": all_cases_duration,
+        "count_case": count_cases
+
+    }
     return statistics_results
 
 

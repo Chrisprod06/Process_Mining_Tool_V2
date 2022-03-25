@@ -5,10 +5,12 @@ from django.urls import reverse_lazy
 
 from .forms import ProcessModelForm, DiscoverProcessModelForm
 from .models import ProcessModel
+from core import pm4py_discovery
+from data_handling.forms import SelectEventLogForm
+from data_handling.models import EventLog
+
 
 # Create your views here.
-
-from core import pm4py_discovery
 
 
 @login_required(login_url="/accounts/login")
@@ -112,4 +114,31 @@ def process_model_discover(request):
             discover_process_model_form.save_m2m()
             return redirect(reverse_lazy("process_handling:process_model_list"))
     context = {"form": discover_process_model_form}
+    return render(request, template, context)
+
+
+def performance_dashboard(request, pk):
+    """View to handle the render of performance dashboard"""
+    template = "process_handling/performance_dashboard.html"
+
+    context = {}
+    return render(request, template, context)
+
+
+def performance_dashboard_select(request):
+    """View to handle the selection of event log for performance dashboard"""
+    template = "process_handling/performance_dashboard_form.html"
+    select_event_log_form = SelectEventLogForm()
+
+    context = {"select_event_log_form": select_event_log_form}
+
+    if request.method == "POST":
+        select_event_log_form = SelectEventLogForm(request.POST)
+        if select_event_log_form.is_valid():
+            event_log_name = select_event_log_form.cleaned_data["event_log"]
+            event_log = EventLog.objects.get(event_log_name=event_log_name)
+            selected_event_log_id = event_log.event_log_id
+            return redirect(
+                reverse_lazy("process_handling:performance_dashboard", kwargs={'pk': selected_event_log_id}))
+
     return render(request, template, context)

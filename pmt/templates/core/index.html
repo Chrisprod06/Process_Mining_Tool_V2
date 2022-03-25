@@ -118,31 +118,6 @@
 
     {# Upload Event Log End #}
 
-    {# Select Event Log Start #}
-    <div id="select_event_log" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                {# Modal Header #}
-                <div class="modal-header">
-                    <h4 class="modal-title">View Event Log Statistics</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
 
-                {# Modal body #}
-                <div class="modal-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ select_event_log_form|crispy }}
-                </div>
-                {# Modal footer #}
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-success" name="submitSelectEventLog" value="Select">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {# Select Event Log End #}
     {# Modals End #}
 {% endblock %}
