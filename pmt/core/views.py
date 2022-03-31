@@ -5,6 +5,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
+
 @login_required(login_url="accounts/login")
 def index(request) -> HttpResponse:
     """View that renders index page"""

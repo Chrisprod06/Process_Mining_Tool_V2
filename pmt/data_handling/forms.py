@@ -27,5 +27,6 @@ class SelectEventLogForm(forms.Form):
 
 class SelectFilter(forms.Form):
     """Form used for selecting filters"""
+
     start_timeframe = forms.DateField()
     end_timeframe = forms.DateField()

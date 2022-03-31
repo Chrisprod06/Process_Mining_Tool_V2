@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+{% block title %}<title>PMT | Social Network Analysis</title>{% endblock %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Social Network Analysis</h1>
+        </div>
+        {% for role in social_network_analysis_results.roles%}
+            {{ role }}
+        {% endfor %}
+
+    </div>
+    <!-- End of Main Content -->
+
+{% endblock %}

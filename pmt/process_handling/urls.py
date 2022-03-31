@@ -30,14 +30,25 @@ urlpatterns = [
         views.process_model_discover,
         name="process_model_discover",
     ),
-
     # Statistics urls
     path(
         "performance_dashboard/<str:pk>",
         views.performance_dashboard,
-        name="performance_dashboard"
+        name="performance_dashboard",
     ),
-    path("performance_dashboard_select",
-         views.performance_dashboard_select,
-         name="performance_dashboard_select")
+    path(
+        "performance_dashboard_select",
+        views.performance_dashboard_select,
+        name="performance_dashboard_select",
+    ),
+    path(
+        "social_network_analysis/<str:pk>",
+        views.social_network_analysis,
+        name="social_network_analysis",
+    ),
+    path(
+        "social_network_analysis_select",
+        views.social_network_analysis_select,
+        name="social_network_analysis_select",
+    ),
 ]

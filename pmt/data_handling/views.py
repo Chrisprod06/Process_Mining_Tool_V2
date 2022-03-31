@@ -24,8 +24,7 @@ def event_log_detail(request, pk):
     file_path = "media/" + str(event_log.event_log_file)
     file = open(file_path, "r")
     event_log_file_content = file.read()
-    context = {"event_log": event_log,
-               "event_log_file_content": event_log_file_content}
+    context = {"event_log": event_log, "event_log_file_content": event_log_file_content}
     return render(request, template, context)
 
 
@@ -84,5 +83,5 @@ def select_filters(request):
     select_filters_form = SelectFilter()
     template = ""
 
-    context= {"select_filters_form": select_filters_form}
-    return render(request,template,context)
+    context = {"select_filters_form": select_filters_form}
+    return render(request, template, context)

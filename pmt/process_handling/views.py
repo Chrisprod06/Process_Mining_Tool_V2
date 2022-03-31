@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from .forms import ProcessModelForm, DiscoverProcessModelForm
 from .models import ProcessModel
-from core import pm4py_discovery
+from core import pm4py_discovery, pm4py_statistics
 from data_handling.forms import SelectEventLogForm
 from data_handling.models import EventLog
 
@@ -120,8 +120,11 @@ def process_model_discover(request):
 def performance_dashboard(request, pk):
     """View to handle the render of performance dashboard"""
     template = "process_handling/performance_dashboard.html"
+    selected_event_log = EventLog.objects.get(pk=pk)
+    selected_event_log_id = selected_event_log.event_log_id
+    statistics_results = pm4py_statistics.calculate_statistics(selected_event_log_id)
 
-    context = {}
+    context = {"statistics_results": statistics_results}
     return render(request, template, context)
 
 
@@ -139,6 +142,45 @@ def performance_dashboard_select(request):
             event_log = EventLog.objects.get(event_log_name=event_log_name)
             selected_event_log_id = event_log.event_log_id
             return redirect(
-                reverse_lazy("process_handling:performance_dashboard", kwargs={'pk': selected_event_log_id}))
+                reverse_lazy(
+                    "process_handling:performance_dashboard",
+                    kwargs={"pk": selected_event_log_id},
+                )
+            )
+
+    return render(request, template, context)
+
+
+def social_network_analysis(request, pk):
+    """View to handle the render of social network analysis"""
+    template = "process_handling/social_network_analysis.html"
+    selected_event_log = EventLog.objects.get(pk=pk)
+    selected_event_log_id = selected_event_log.event_log_id
+    social_network_analysis_results = pm4py_statistics.calculate_social_network_analysis(selected_event_log_id)
+    context = {
+        "social_network_analysis_results": social_network_analysis_results
+    }
+    return render(request, template, context)
+
+
+def social_network_analysis_select(request):
+    """View to handle the selection of event log for social network analysis"""
+    template = "process_handling/performance_dashboard_form.html"
+    select_event_log_form = SelectEventLogForm()
+
+    context = {"select_event_log_form": select_event_log_form}
+
+    if request.method == "POST":
+        select_event_log_form = SelectEventLogForm(request.POST)
+        if select_event_log_form.is_valid():
+            event_log_name = select_event_log_form.cleaned_data["event_log"]
+            event_log = EventLog.objects.get(event_log_name=event_log_name)
+            selected_event_log_id = event_log.event_log_id
+            return redirect(
+                reverse_lazy(
+                    "process_handling:social_network_analysis",
+                    kwargs={"pk": selected_event_log_id},
+                )
+            )
 
     return render(request, template, context)
