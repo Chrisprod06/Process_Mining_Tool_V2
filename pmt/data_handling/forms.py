@@ -23,3 +23,10 @@ class SelectEventLogForm(forms.Form):
     """Form used for selecting event log"""
 
     event_log = CustomEventLogModelChoiceField(queryset=EventLog.objects.all())
+
+
+class SelectFilter(forms.Form):
+    """Form used for selecting filters"""
+
+    start_timeframe = forms.DateField()
+    end_timeframe = forms.DateField()

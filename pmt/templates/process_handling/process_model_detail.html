@@ -2,21 +2,20 @@
 {% load crispy_forms_tags %}
 {% block title %}<title>PMT | Process Model Visualization</title>{% endblock %}
 {% block content %}
-   <h1>Process Model: {{ process_model }}</h1>
+    <h1>Process Model: {{ process_model }}</h1>
     <div class="container-fluid">
         {# Details start #}
         <section id="details ">
             <div class="row mb-5">
                 <div class="col-4">
-                     <p>Process Model Name: {{ process_model.process_model_name }} </p>
+                    <p>Process Model Name: {{ process_model.process_model_name }} </p>
                 </div>
                 <div class="col-4">
                     <p>Process Model Owner: {{ process_model.process_model_owner }}</p>
                 </div>
                 <div class="col-4">
-            <p>Event Log Name: {{ process_model.process_model_log_name }}</p>
+                    <p>Event Log Name: {{ process_model.process_model_log_name }}</p>
                 </div>
-
 
 
             </div>
@@ -32,5 +31,5 @@
 
         {# BPMN graph end #}
     </div>
-    </div>
+
 {% endblock %}

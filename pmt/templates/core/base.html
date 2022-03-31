@@ -102,8 +102,10 @@
             <div id="collapseStatistics" class="collapse" aria-labelledby="headingUtilities"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">Performance Dashboard</a>
-                    <a class="collapse-item" href="#">Social Network Analysis</a>
+                    <a class="collapse-item" href="{% url 'process_handling:performance_dashboard_select' %}">Performance
+                        Dashboard</a>
+                    <a class="collapse-item" href="{% url 'process_handling:social_network_analysis_select' %}">Social
+                        Network Analysis</a>
                 </div>
             </div>
         </li>
@@ -252,8 +254,8 @@
 <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
-    <!-- viewer distro (with pan and zoom) -->
-    <script src="https://unpkg.com/bpmn-js@9.0.3/dist/bpmn-navigated-viewer.development.js"></script>
+<!-- viewer distro (with pan and zoom) -->
+<script src="https://unpkg.com/bpmn-js@9.0.3/dist/bpmn-navigated-viewer.development.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -268,57 +270,57 @@
 
 </script>
 
-    <script>
+<script>
 
-        var diagramUrl = 'https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn';
+    var diagramUrl = 'https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn';
 
-        // viewer instance
-        var bpmnViewer = new BpmnJS({
-            container: '#canvas'
-        });
-
-
-        /**
-         * Open diagram in our viewer instance.
-         *
-         * @param {String} bpmnXML diagram to display
-         */
-        async function openDiagram(bpmnXML) {
-
-            // import diagram
-            try {
-
-                await bpmnViewer.importXML(bpmnXML);
-
-                // access viewer components
-                var canvas = bpmnViewer.get('canvas');
-                var overlays = bpmnViewer.get('overlays');
+    // viewer instance
+    var bpmnViewer = new BpmnJS({
+        container: '#canvas'
+    });
 
 
-                // zoom to fit full viewport
-                canvas.zoom('fit-viewport');
+    /**
+     * Open diagram in our viewer instance.
+     *
+     * @param {String} bpmnXML diagram to display
+     */
+    async function openDiagram(bpmnXML) {
 
-                // attach an overlay to a node
-                overlays.add('SCAN_OK', 'note', {
-                    position: {
-                        bottom: 0,
-                        right: 0
-                    },
-                    html: '<div class="diagram-note">Mixed up the labels?</div>'
-                });
+        // import diagram
+        try {
 
-                // add marker
-                canvas.addMarker('SCAN_OK', 'needs-discussion');
-            } catch (err) {
+            await bpmnViewer.importXML(bpmnXML);
 
-                console.error('could not import BPMN 2.0 diagram', err);
-            }
+            // access viewer components
+            var canvas = bpmnViewer.get('canvas');
+            var overlays = bpmnViewer.get('overlays');
+
+
+            // zoom to fit full viewport
+            canvas.zoom('fit-viewport');
+
+            // attach an overlay to a node
+            overlays.add('SCAN_OK', 'note', {
+                position: {
+                    bottom: 0,
+                    right: 0
+                },
+                html: '<div class="diagram-note">Mixed up the labels?</div>'
+            });
+
+            // add marker
+            canvas.addMarker('SCAN_OK', 'needs-discussion');
+        } catch (err) {
+
+            console.error('could not import BPMN 2.0 diagram', err);
         }
+    }
 
 
-        // load external diagram file via AJAX and open it
-        $.get(diagramUrl, openDiagram, 'text');
-    </script>
+    // load external diagram file via AJAX and open it
+    $.get(diagramUrl, openDiagram, 'text');
+</script>
 
 </body>
 
