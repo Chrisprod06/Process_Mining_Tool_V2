@@ -1,0 +1,233 @@
+{% extends "core/base.html" %}
+{% block title %}<title>PMT | Conformance Check</title>{% endblock %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Conformance Check</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Traces
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.total_traces }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Fit Traces
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.total_fit_traces }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Traces With Problems
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.total_traces_problem }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Median Trace Fitness
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.trace_fitness_median }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="table_replayed_traces" class="display">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Trace is Fit</th>
+                        <th>Trace Fitness</th>
+                        <th>Activated Transitions</th>
+                        <th>Reached Marking</th>
+                        <th>Enabled Transitions Marking</th>
+                        <th>Transitions With Problems</th>
+                        <th>Missing Tokens</th>
+                        <th>Consumed Tokens</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for trace in results.replayed_traces %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ trace.trace_is_fit }}</td>
+                            <td>{{ trace.trace_fitness }}</td>
+                            <td>
+                                <a href="#activated_transitions" data-toggle="modal"
+                                   class="btn btn-primary btn-sm">Show</a>
+                                <div class="modal fade" id="activated_transitions" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Activated
+                                                    Transitions</h5>
+                                                <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% for transition in trace.activated_transitions %}
+                                                    <p>{{ transition }}</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" data-dismiss="modal">Ok
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#reached_marking" data-toggle="modal" class="btn btn-primary btn-sm">Show</a>
+                                <div class="modal fade" id="reached_marking" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Reached Marking</h5>
+                                                <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% for marking in trace.reached_marking %}
+                                                    <p>{{ marking }}</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" data-dismiss="modal">Ok
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#enabled_transitions_marking" data-toggle="modal"
+                                   class="btn btn-primary btn-sm">Show</a>
+                                <div class="modal fade" id="enabled_transitions_marking" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Enabled Transitions
+                                                    Marking</h5>
+                                                <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% for marking in trace.enabled_transitions_in_marking %}
+                                                    <p>{{ marking }}</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" data-dismiss="modal">Ok
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#transitions_problems" data-toggle="modal"
+                                   class="btn btn-primary btn-sm">Show</a>
+                                <div class="modal fade" id="transitions_problems" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Transitions with
+                                                    problems</h5>
+                                                <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% for transition in trace.transitions_with_problems %}
+                                                    <p>{{ transition }}</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" data-dismiss="modal">Ok
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ trace.missing_tokens }}</td>
+                            <td>{{ trace.consumed_tokens }}</td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- End of Main Content -->
+
+{% endblock %}

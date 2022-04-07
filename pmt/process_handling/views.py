@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from .forms import ProcessModelForm, DiscoverProcessModelForm
+from .forms import ProcessModelForm, DiscoverProcessModelForm, SelectEventLogAndProcessModelForm
 from .models import ProcessModel
-from core import pm4py_discovery, pm4py_statistics
+from core import pm4py_discovery, pm4py_statistics, pm4py_conformance
 from data_handling.forms import SelectEventLogForm
 from data_handling.models import EventLog
 
@@ -180,6 +180,43 @@ def social_network_analysis_select(request):
                 reverse_lazy(
                     "process_handling:social_network_analysis",
                     kwargs={"pk": selected_event_log_id},
+                )
+            )
+
+    return render(request, template, context)
+
+
+def conformance_check(request, event_log_pk, process_model_pk):
+    """View to handle te conformance check of an event log and process model"""
+    template = "process_handling/conformance_check.html"
+    results = pm4py_conformance.perform_token_replay(event_log_pk, process_model_pk)
+    context = {"results": results}
+    return render(request, template, context)
+
+
+def conformance_check_select(request):
+    """View to handle the selection of an event log and process model for conformance checking"""
+    template = "process_handling/conformance_check_form.html"
+    select_event_log_process_model_form = SelectEventLogAndProcessModelForm()
+
+    context = {
+        "select_event_log_process_model_form": select_event_log_process_model_form
+    }
+
+    if request.method == "POST":
+        select_event_log_process_model_form = SelectEventLogAndProcessModelForm(request.POST)
+        if select_event_log_process_model_form.is_valid():
+            event_log_name = select_event_log_process_model_form.cleaned_data["event_log"]
+            process_model_id = select_event_log_process_model_form.cleaned_data["process_model"]
+            event_log = EventLog.objects.get(event_log_name=event_log_name)
+            process_model = ProcessModel.objects.get(process_model_id=process_model_id)
+            selected_event_log_id = event_log.event_log_id
+            selected_process_model_id = process_model.process_model_id
+            return redirect(
+                reverse_lazy(
+                    "process_handling:conformance_check",
+                    kwargs={"event_log_pk": selected_event_log_id,
+                            "process_model_pk": selected_process_model_id}
                 )
             )
 

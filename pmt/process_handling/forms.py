@@ -3,6 +3,9 @@ from django import forms
 
 from .models import ProcessModel
 
+from data_handling.models import EventLog
+from data_handling.forms import CustomEventLogModelChoiceField
+
 
 class ProcessModelForm(ModelForm):
     """Form used for upload/modify process models"""
@@ -35,6 +38,14 @@ class CustomProcessModelModelChoiceField(forms.ModelChoiceField):
 class SelectProcessModelForm(forms.Form):
     """Form used for selecting process model"""
 
+    process_model = CustomProcessModelModelChoiceField(
+        queryset=ProcessModel.objects.all()
+    )
+
+
+class SelectEventLogAndProcessModelForm(forms.Form):
+    """Form used for selecting event log and process model"""
+    event_log = CustomEventLogModelChoiceField(queryset=EventLog.objects.all())
     process_model = CustomProcessModelModelChoiceField(
         queryset=ProcessModel.objects.all()
     )

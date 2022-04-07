@@ -87,7 +87,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% url 'process_handling:conformance_check_select' %}">
                 <i class="fas fa-clipboard-check"></i>
                 <span>Conformance Checking</span></a>
         </li>
@@ -269,10 +269,16 @@
     });
 
 </script>
+<script>
+    $(document).ready(function () {
+        $('#table_replayed_traces').DataTable();
+    });
+
+</script>
 
 <script>
 
-    var diagramUrl = 'https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn';
+    var diagramUrl = '/pmt/media/process_models/bpmn/process_model_name.bpmn';
 
     // viewer instance
     var bpmnViewer = new BpmnJS({
