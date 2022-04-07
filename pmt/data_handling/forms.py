@@ -32,7 +32,7 @@ class SelectFiltersFormDate(forms.Form):
     # filter_date = forms.BooleanField(label='filter by date')
 
     start_time = forms.DateTimeField(label="starting time: ", required=False)
-    end_time = forms.DateField(label="ending time: ", required=False)
+    end_time = forms.DateTimeField(label="ending time: ", required=False)
     file_name = forms.CharField(label="file name")
 
 

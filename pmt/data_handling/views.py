@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.utils.dateparse import parse_datetime
 from pm4py.algo.filtering.log.timestamp import timestamp_filter
 
 # imports for import/export
@@ -98,17 +99,31 @@ def event_log_filter(request, pk):
     formAttribute = SelectFiltersFormAttributes()
     formVariant = SelectFiltersFormVariant()
     if request.method == "POST":
-        if "submitFilterDuration" in request.POST:
+        if "submitFilterDate" in request.POST:
             form_date = SelectFiltersFormDate(request.POST)
             if form_date.is_valid():
                 start = form_date.cleaned_data.get("start_time")
                 end = form_date.cleaned_data.get("end_time")
+
+                start = start.replace(tzinfo=None)
+                end = end.replace(tzinfo=None)
                 file_name = form_date.cleaned_data.get("file_name")
+
                 event_log_path = event_log.event_log_file
-                print(event_log_path)
                 log = xes_importer.apply("media/" + str(event_log_path))
+
                 filtered_log = timestamp_filter.filter_traces_contained(log, start, end)
-                xes_exporter.apply(filtered_log, "media/" + file_name + ".xes")
+                xes_exporter.apply(filtered_log, "media/event_logs/" + file_name + ".xes")
+
+                event_log_file = "event_logs/" + file_name + ".xes"
+
+                new_filtered_event_log = EventLog()
+                new_filtered_event_log.event_log_owner = event_log.event_log_owner
+                new_filtered_event_log.event_log_name = file_name
+                new_filtered_event_log.event_log_file = event_log_file
+                new_filtered_event_log.save()
+
+                return redirect(reverse_lazy("data_handling:event_log_list"))
     context = {"event_log": event_log, "formDate": form_date, "formDuration": formDuration,
                "formStartEnd": formStartEnd, "formAttribute": formAttribute, "formVariant": formVariant}
     return render(request, template, context)
