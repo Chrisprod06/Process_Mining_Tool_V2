@@ -189,8 +189,8 @@ def social_network_analysis_select(request):
 def conformance_check(request, event_log_pk, process_model_pk):
     """View to handle te conformance check of an event log and process model"""
     template = "process_handling/conformance_check.html"
-    results = pm4py_conformance.perform_token_replay(event_log_pk, process_model_pk)
-    context = {"results": results}
+    token_replay_results = pm4py_conformance.perform_token_replay(event_log_pk, process_model_pk)
+    context = {"token_replay_results": token_replay_results}
     return render(request, template, context)
 
 

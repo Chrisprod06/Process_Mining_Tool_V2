@@ -1,5 +1,7 @@
 from statistics import median
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
+from pm4py.algo.conformance.tokenreplay.diagnostics import duration_diagnostics
+
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.petri_net.importer import importer as pnml_importer
 
@@ -48,8 +50,48 @@ def perform_token_replay(event_log_name, process_model_id) -> dict:
         "total_traces_problem": total_traces_problem,
         "trace_fitness_median": trace_fitness_median
     }
-    results = {
+    token_replay_results = {
         "replayed_traces": replayed_traces,
         "overview": overview
     }
-    return results
+    return token_replay_results
+
+
+def perform_diagnostics(event_log_name, process_model_id) -> dict:
+    """Function to perform diagnostics to model"""
+    # Import event log
+    event_log = EventLog.objects.get(pk=event_log_name)
+    event_log_path = event_log.event_log_file
+    event_log_file = xes_importer.apply("media/" + str(event_log_path))
+
+    # Import process model
+    process_model = ProcessModel.objects.get(process_model_id=process_model_id)
+    process_model_path = process_model.process_model_pnml_file
+    process_model_file = pnml_importer.apply("media/" + str(process_model_path))
+    net, initial_marking, final_marking = process_model_file
+
+    # Perform token based replay for diagnostics
+    parameters_tbr = {token_replay.Variants.TOKEN_REPLAY.value.Parameters.DISABLE_VARIANTS: True,
+                      token_replay.Variants.TOKEN_REPLAY.value.Parameters.ENABLE_PLTR_FITNESS: True}
+    replayed_traces, place_fitness, trans_fitness, unwanted_activities = token_replay.apply(event_log_file, net,
+                                                                                            initial_marking,
+                                                                                            final_marking,
+                                                                                            parameters=parameters_tbr)
+    # Calculate Throughput analysis (unfit execution)
+    trans_diagnostics = duration_diagnostics.diagnose_from_trans_fitness(event_log_file, trans_fitness)
+
+    # Calculate Throughput analysis (activities)
+    act_diagnostics = duration_diagnostics.diagnose_from_notexisting_activities(event_log_file, unwanted_activities)
+
+    # Calculate Root Cause Analysis
+
+    # Calculate Root Cause Analysis (unfit execution)
+
+    # Calculate Root Cause Analysis (activities that are not in the model)
+
+    diagnostics_results = {
+        "trans_diagnostics": trans_diagnostics,
+        "act_diagnostics": act_diagnostics
+    }
+
+    return diagnostics_results

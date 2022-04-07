@@ -9,6 +9,10 @@
             <h1 class="h3 mb-0 text-gray-800">Conformance Check</h1>
         </div>
 
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h3 class="h3 mb-0 text-gray-800">Token Replay</h3>
+        </div>
+
         <div class="row">
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
@@ -18,7 +22,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Total Traces
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.total_traces }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ token_replay_results.overview.total_traces }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -35,7 +39,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Total Fit Traces
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.total_fit_traces }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ token_replay_results.overview.total_fit_traces }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -52,7 +56,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Traces With Problems
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.total_traces_problem }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ token_replay_results.overview.total_traces_problem }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -69,7 +73,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Median Trace Fitness
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.overview.trace_fitness_median }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ token_replay_results.overview.trace_fitness_median }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -96,7 +100,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for trace in results.replayed_traces %}
+                    {% for trace in token_replay_results.replayed_traces %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ trace.trace_is_fit }}</td>
@@ -224,6 +228,9 @@
                 </table>
             </div>
 
+        </div>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h3 class="h3 mb-0 text-gray-800">Diagnostics</h3>
         </div>
 
 
