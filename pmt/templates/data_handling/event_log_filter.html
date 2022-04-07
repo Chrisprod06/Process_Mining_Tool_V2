@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}<title>PMT | Filter Event Log</title>{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h2 class="h3 mb-0 text-gray-800">Select a Filter : </h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="time-tab" data-toggle="tab" href="#time" role="tab"
+                           aria-controls="time" aria-selected="true">Timeframe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="date-tab" data-toggle="tab" href="#date" role="tab"
+                           aria-controls="date" aria-selected="false">Duration</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="startEnd-tab" data-toggle="tab" href="#startEnd" role="tab"
+                           aria-controls="startEnd" aria-selected="false">Start/End activity</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="attribute-tab" data-toggle="tab" href="#attribute" role="tab"
+                           aria-controls="attribute" aria-selected="false">Attributes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="variant-tab" data-toggle="tab" href="#variant" role="tab"
+                           aria-controls="variant" aria-selected="false">Case variant</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-4">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="time" role="tabpanel" aria-labelledby="time-tab">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ formDate|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDate"
+                                   id="submitFilterDate">
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="date" role="tabpanel" aria-labelledby="date-tab">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ formDuration|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDuration"
+                                   id="submitFilterDuration">
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="startEnd" role="tabpanel" aria-labelledby="startEnd-tab">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ formStartEnd|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
+                                   id="submitFilterEventLog">
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="attribute" role="tabpanel"
+                         aria-labelledby="attribute-tab">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ formAttribute|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
+                                   id="submitFilterEventLog">
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="variant" role="tabpanel" aria-labelledby="variant-tab">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ formVariant|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
+                                   id="submitFilterEventLog">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

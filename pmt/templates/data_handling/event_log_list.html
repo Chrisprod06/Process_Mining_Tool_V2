@@ -38,6 +38,8 @@
                            class="btn btn-warning btn-sm">Update</a>
                         <a href="#delete_event_log" class="btn btn-danger btn-sm" data-toggle="modal">Delete</a>
                         {% include "data_handling/event_log_confirm_delete.html" %}
+                        <a href="{% url "data_handling:event_log_filter" log.event_log_id %}"
+                           class="btn btn-success btn-sm">Filter</a>
                     </td>
                 </tr>
             {% endfor %}
