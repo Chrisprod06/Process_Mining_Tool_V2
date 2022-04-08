@@ -51,4 +51,16 @@ urlpatterns = [
         views.social_network_analysis_select,
         name="social_network_analysis_select",
     ),
+    # Conformance urls
+    path(
+        "conformance_check/<str:event_log_pk>/<str:process_model_pk>",
+        views.conformance_check,
+        name="conformance_check"
+    ),
+    path(
+        "conformance_check_select",
+        views.conformance_check_select,
+        name="conformance_check_select"
+    )
+
 ]
