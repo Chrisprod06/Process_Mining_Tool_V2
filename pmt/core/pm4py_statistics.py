@@ -139,9 +139,10 @@ def calculate_statistics(event_log_id) -> dict:
     # Case duration distribution
     x, y = case_statistics.get_kde_caseduration(event_log, parameters={
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: "time:timestamp"})
-
-    gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.CASES)
-    graphs_visualizer.view(gviz)
+    case_duration_graph_data = {
+        "x": x,
+        "y": y
+    }
 
     statistics_results = {
         "all_cases_durations": all_cases_duration,
@@ -152,6 +153,7 @@ def calculate_statistics(event_log_id) -> dict:
         "median_case_duration": median_case_duration,
         "average_case_duration": average_case_duration,
         "max_case_duration": max_case_duration,
+        "case_duration_graph_data": case_duration_graph_data
     }
 
     return statistics_results

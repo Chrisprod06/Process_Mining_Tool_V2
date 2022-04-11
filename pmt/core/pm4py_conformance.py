@@ -1,6 +1,7 @@
 from statistics import median
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.algo.conformance.tokenreplay.diagnostics import duration_diagnostics
+from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.petri_net.importer import importer as pnml_importer
@@ -95,3 +96,21 @@ def perform_diagnostics(event_log_name, process_model_id) -> dict:
     }
 
     return diagnostics_results
+
+
+def perform_alignment(event_log_name, process_model_id):
+    """Function to perform alignment"""
+    # Import event log
+    event_log = EventLog.objects.get(pk=event_log_name)
+    event_log_path = event_log.event_log_file
+    event_log_file = xes_importer.apply("media/" + str(event_log_path))
+
+    # Import process model
+    process_model = ProcessModel.objects.get(process_model_id=process_model_id)
+    process_model_path = process_model.process_model_pnml_file
+    process_model_file = pnml_importer.apply("media/" + str(process_model_path))
+    net, initial_marking, final_marking = process_model_file
+
+    aligned_traces = alignments.apply_log(event_log_file, net, initial_marking, final_marking)
+
+    return aligned_traces
