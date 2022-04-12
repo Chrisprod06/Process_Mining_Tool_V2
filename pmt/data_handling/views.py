@@ -14,8 +14,7 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 
 from .models import EventLog
-from .forms import EventLogForm, SelectFiltersFormDate, SelectFiltersFormDuration, SelectFiltersFormStartEnd, \
-    SelectFiltersFormAttributes, SelectFiltersFormVariant
+from .forms import EventLogForm, SelectFiltersFormDate, SelectFiltersFormDuration, SelectFiltersFormStartEnd, SelectFiltersFormAttributes, SelectFiltersFormVariant
 
 
 @login_required(login_url="/accounts/login")
@@ -94,81 +93,82 @@ def event_log_filter(request, pk):
     event_log = EventLog.objects.get(pk=pk)
     template = "data_handling/event_log_filter.html"
     form_date = SelectFiltersFormDate()
-    formDuration = SelectFiltersFormDuration()
-    formStartEnd = SelectFiltersFormStartEnd()
-    formAttribute = SelectFiltersFormAttributes()
-    formVariant = SelectFiltersFormVariant()
+    form_duration = SelectFiltersFormDuration()
+    form_start_end = SelectFiltersFormStartEnd()
+    form_attributes = SelectFiltersFormAttributes()
+    form_variant = SelectFiltersFormVariant()
     if request.method == "POST":
+        event_log_path = event_log.event_log_file
+        log = xes_importer.apply("media/" + str(event_log_path))
         if "submitFilterDate" in request.POST:
             form_date = SelectFiltersFormDate(request.POST)
             if form_date.is_valid():
                 start = form_date.cleaned_data.get("start_time")
                 end = form_date.cleaned_data.get("end_time")
-
                 start = start.replace(tzinfo=None)
                 end = end.replace(tzinfo=None)
                 file_name = form_date.cleaned_data.get("file_name")
-
-                event_log_path = event_log.event_log_file
-                log = xes_importer.apply("media/" + str(event_log_path))
-
                 filtered_log = timestamp_filter.filter_traces_contained(log, start, end)
-                xes_exporter.apply(filtered_log, "media/event_logs/" + file_name + ".xes")
+        if "submitFiltetDuration" in request.POST:
+            form_duration = SelectFiltersFormDuration(request.POST)
+            if form_date.is_valid():
+                min_duration = form_duration.cleaned_data.get("min_duration")
+                max_duration = form_duration.cleaned_data.get("max_duration")
+                file_name = form_duration.cleaned_data.get("file_name")
+                filtered_log = case_filter.filter_case_performance(log, min_duration, max_duration)
+        if "submitFilterStartEnd" in request.POST:
+            form_start_end = SelectFiltersFormStartEnd(request.POST)
+            if form_start_end.is_valid():
+                activity = form_start_end.cleaned_data.get("activity")
+                start_checkbox = form_start_end.cleaned_data.get("start_checkbox")
+                end_checkbox = form_start_end.cleaned_data.get("end_checkbox")
+                frequent_checkbox = form_start_end.cleaned_data.get("frequent_checkbox")
+                file_name = form_start_end.cleaned_data.get("file_name")
+                if start_checkbox == True:
+                    if frequent_checkbox == False:
+                        log_start = start_activities_filter.get_start_activities(log)
+                        filtered_log = start_activities_filter.apply(log, [activity])
+                        #xes_exporter.apply(filtered_log, "media/" + file_name + ".xes")
+                    else:
+                        # log_af_sa
+                        filtered_log = start_activities_filter.apply_auto_filter(log, parameters={start_activities_filter.Parameters.DECREASING_FACTOR: 0.5})
+                        #xes_exporter.apply(log_af_sa, "media" + file_name + ".xes")
+                elif end_checkbox == True:
+                    end_activities = end_activities_filter.get_end_activities(log)
+                    filtered_log = end_activities_filter.apply(log, [" Final consult"])
+                    print(end_activities)
+        if "submitFilterAttributes" in request.POST:
+            form_attributes = SelectFiltersFormAttributes(request.POST)
+            if form_attributes.is_valid():
+                selected_attribute = form_attributes.cleaned_data.get("selected_attribute")
+                selected_attribute = " "+selected_attribute
+                li = list(selected_attribute.split(","))
+                file_name = form_attributes.cleaned_data.get("file_name")
+                containing_box = form_attributes.cleaned_data.get("activity_containing")
+                not_containing_box = form_attributes.cleaned_data.get("activity_not_containing")
+                if containing_box == True:
+                    activities = attributes_filter.get_attribute_values(log, "concept:name")
+                    resources = attributes_filter.get_attribute_values(log, "org:resource")
+                    print(activities)
+                    print(resources)
+                    print(li)
+                    #tracefilter_log_pos
+                    filtered_log = attributes_filter.apply(log, li,parameters={attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource", attributes_filter.Parameters.POSITIVE: True})
+                elif not_containing_box == True:
+                    #tracefilter_log_neg
+                    filtered_log = attributes_filter.apply(log, [selected_attribute],parameters={attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource", attributes_filter.Parameters.POSITIVE: False})
+        xes_exporter.apply(filtered_log, "media/event_logs/" + file_name + ".xes")
+        event_log_file = "event_logs/" + file_name + ".xes"
+        new_filtered_event_log = EventLog()
+        new_filtered_event_log.event_log_owner = event_log.event_log_owner
+        new_filtered_event_log.event_log_name = file_name
+        new_filtered_event_log.event_log_file = event_log_file
+        new_filtered_event_log.save()
+        return redirect(reverse_lazy("data_handling:event_log_list"))
 
-                event_log_file = "event_logs/" + file_name + ".xes"
-
-                new_filtered_event_log = EventLog()
-                new_filtered_event_log.event_log_owner = event_log.event_log_owner
-                new_filtered_event_log.event_log_name = file_name
-                new_filtered_event_log.event_log_file = event_log_file
-                new_filtered_event_log.save()
-
-                return redirect(reverse_lazy("data_handling:event_log_list"))
-    context = {"event_log": event_log, "formDate": form_date, "formDuration": formDuration,
-               "formStartEnd": formStartEnd, "formAttribute": formAttribute, "formVariant": formVariant}
+    context = {"event_log": event_log, "form_date": form_date, "form_duration": form_duration,
+               "form_start_end": form_start_end, "form_attributes": form_attributes, "form_variant": form_variant}
     return render(request, template, context)
-
-
-@login_required(login_url="/accounts/login")
-def filter_timestamp(request, pk):
-    """View to filter a log with given timestamp"""
-    event_log = EventLog.objects.get(pk=pk)
-    form = SelectFiltersFormDate(request.POST)
-    if form.is_valid():
-        start = form.cleaned_data.get("start_time")
-        end = form.cleaned_data.get("end_time")
-        file_name = form.cleaned_data.get("file_name")
-        log = xes_importer.apply(event_log)
-        filtered_log = timestamp_filter.filter_traces_contained(log, start, end)
-        xes_exporter.apply(filtered_log, "media/" + file_name + ".xes")
-
-
-@login_required(login_url="/accounts/login")
-def filter_case_start_end_activity(request, pk):
-    """View to filter a log with a given case variant"""
-    event_log = EventLog.objects.get(pk=pk)
-    submitbutton = request.POST.get("submit")
-    form = SelectFiltersFormStartEnd(request.POST)
-    if form.is_valid():
-        activity = form.cleaned_data.get("activity")
-        start_checkbox = form.cleaned_data.get("start_checkbox")
-        end_checkbox = form.cleaned_data.get("end_checkbox")
-        frequent_checkbox = form.cleaned_data.get("frequent_checkbox")
-        file_name = form.cleaned_data.get("file_name")
-        log = xes_importer.apply(event_log)
-        if start_checkbox.equals(True):
-            if frequent_checkbox.equals(False):
-                # log_start = start_activities_filter.get_start_activities(log)
-                filtered_log = start_activities_filter.apply(log, [activity])
-                xes_exporter.apply(filtered_log, "media/" + file_name + ".xes")
-            else:
-                log_af_sa = start_activities_filter.apply_auto_filter(log, parameters={
-                    start_activities_filter.Parameters.DECREASING_FACTOR: 0.6})
-                xes_exporter.apply(log_af_sa, "media" + file_name + ".xes")
-        elif end_checkbox.equals(True):
-            # end_activities = end_activities_filter.get_end_activities(log)
-            filtered_log = end_activities_filter.apply(log, [activity])
-            xes_exporter.apply(filtered_log, "media" + file_name + ".xes")
 
 
 @login_required(login_url="/accounts/login")
@@ -177,45 +177,3 @@ def filter_case_variant(request, pk):
     event_log = EventLog.objects.get(pk=pk)
     submitbutton = request.POST.get("submit")
     form = SelectFiltersFormVariant(request.POST)
-
-
-@login_required(login_url="/accounts/login")
-def filter_duration(request, pk):
-    """View to filter a log given the duration of a case"""
-    event_log = EventLog.objects.get(pk=pk)
-    submitbutton = request.POST.get("submit")
-    form = SelectFiltersFormDuration(request.POST)
-    if form.isvalid():
-        min_duration = form.cleaned_data.get("min_duration")
-        max_duration = form.cleaned_data.get("max_duration")
-        file_name = form.cleaned_data.get("file_name")
-        log = xes_importer.apply(event_log)
-        filtered_log = case_filter.filter_case_performance(log, min_duration, max_duration)
-        xes_exporter.apply(log, "media/" + file_name + ".xes")
-
-
-@login_required(login_url="/accounts/login")
-def filter_attributes(request, pk):
-    """View to filter a log given the duration of a case"""
-    event_log = EventLog.objects.get(pk=pk)
-    submitbutton = request.POST.get("submit")
-    form = SelectFiltersFormAttributes(request.POST)
-    if form.isvalid():
-        selected_attribute = form.cleaned_data.get("selected_attribute")
-        file_name = form.cleaned_data.get("file_name")
-        containing_box = form.cleaned_data.get("activity_containing")
-        not_containing_box = form.cleaned_data.get("activity_not_containing")
-        if containing_box.equals(True):
-            activities = attributes_filter.get_attribute_values(event_log, "concept:name")
-            resources = attributes_filter.get_attribute_values(event_log, "org:resource")
-            tracefilter_log_pos = attributes_filter.apply(event_log, [selected_attribute],
-                                                          parameters={
-                                                              attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
-                                                              attributes_filter.Parameters.POSITIVE: True})
-            xes_exporter.apply(tracefilter_log_pos, "media/" + file_name + ".xes")
-        elif not_containing_box.equals(True):
-            tracefilter_log_neg = attributes_filter.apply(event_log, [selected_attribute],
-                                                          parameters={
-                                                              attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
-                                                              attributes_filter.Parameters.POSITIVE: False})
-            xes_exporter.apply(tracefilter_log_neg, "media/" + file_name + ".xes")

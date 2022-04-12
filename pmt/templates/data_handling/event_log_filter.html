@@ -38,7 +38,7 @@
                     <div class="tab-pane fade show active" id="time" role="tabpanel" aria-labelledby="time-tab">
                         <form action="" method="POST">
                             {% csrf_token %}
-                            {{ formDate|crispy }}
+                            {{ form_date|crispy }}
                             <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDate"
                                    id="submitFilterDate">
                         </form>
@@ -46,7 +46,7 @@
                     <div class="tab-pane fade" id="date" role="tabpanel" aria-labelledby="date-tab">
                         <form action="" method="POST">
                             {% csrf_token %}
-                            {{ formDuration|crispy }}
+                            {{ form_duration|crispy }}
                             <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDuration"
                                    id="submitFilterDuration">
                         </form>
@@ -54,24 +54,24 @@
                     <div class="tab-pane fade" id="startEnd" role="tabpanel" aria-labelledby="startEnd-tab">
                         <form action="" method="POST">
                             {% csrf_token %}
-                            {{ formStartEnd|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
-                                   id="submitFilterEventLog">
+                            {{ form_start_end|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterStartEnd"
+                                   id="submitFilterStartEnd">
                         </form>
                     </div>
                     <div class="tab-pane fade" id="attribute" role="tabpanel"
                          aria-labelledby="attribute-tab">
                         <form action="" method="POST">
                             {% csrf_token %}
-                            {{ formAttribute|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
-                                   id="submitFilterEventLog">
+                            {{ form_attributes|crispy }}
+                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterAttributes"
+                                   id="submitFilterAttributes">
                         </form>
                     </div>
                     <div class="tab-pane fade" id="variant" role="tabpanel" aria-labelledby="variant-tab">
                         <form action="" method="POST">
                             {% csrf_token %}
-                            {{ formVariant|crispy }}
+                            {{ form_variant|crispy }}
                             <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
                                    id="submitFilterEventLog">
                         </form>

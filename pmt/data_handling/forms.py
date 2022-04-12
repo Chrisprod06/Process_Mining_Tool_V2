@@ -52,8 +52,8 @@ class SelectFiltersFormStartEnd(forms.Form):
 
 class SelectFiltersFormAttributes(forms.Form):
     selected_attribute = forms.CharField(label="Attribute")
-    activity_containing = forms.BooleanField(label="Containing")
-    activity_not_containing = forms.BooleanField(label="Not Containing")
+    activity_containing = forms.BooleanField(label="Containing", required=False)
+    activity_not_containing = forms.BooleanField(label="Not Containing", required=False)
     file_name = forms.CharField(label="file name:")
 
 
