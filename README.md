@@ -4,9 +4,7 @@ Process mining tool for thesis. Version 2
 # Installation
 - Create a venv with the requirements.txt
   - pip install -r requirements.txt
-  - pip install djangorestframework
-  - pip install markdown       # Markdown support for the browsable API.
-  - pip install django-filter  # Filtering support
+  - sudo apt-get install -y graphviz
 - Create postgres container with
    sudo docker run --name pmt_postgres -p 5432:5432 -e POSTGRES_PASSWORD=your password -d postgres
 

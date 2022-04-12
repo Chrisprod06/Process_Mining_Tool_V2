@@ -14,6 +14,7 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 
 from .models import EventLog
+
 from .forms import EventLogForm, SelectFiltersFormDate, SelectFiltersFormDuration, SelectFiltersFormStartEnd, SelectFiltersFormAttributes, SelectFiltersFormVariant
 
 

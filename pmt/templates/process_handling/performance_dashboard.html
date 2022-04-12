@@ -10,10 +10,8 @@
         </div>
 
         <div class="row">
-
-
-            {# Cases Card #}
-            <div class="col-xl-2 col-md-4 mb-4">
+            {# Count Cases #}
+            <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -21,7 +19,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Cases
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">101</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_case }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -30,7 +28,8 @@
                     </div>
                 </div>
             </div>
-             {# Case variants #}
+
+            {# Case variants #}
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
@@ -39,7 +38,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Case Variants
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">16</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_variants }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -55,9 +54,9 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                   Activity Instances
+                                    Activity Instances
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">697</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -66,7 +65,7 @@
                     </div>
                 </div>
             </div>
-             {# Activities #}
+            {# Activities #}
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
@@ -75,7 +74,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Activities
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -93,10 +92,10 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Case Duration
                                 </div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Min 1.07 days</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Median 1.39 wks</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Average 1.37 wks</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Max 2.44 wks</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">Min {{ statistics_results.min_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">Median {{ statistics_results.median_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">Average {{ statistics_results.average_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">Max {{ statistics_results.max_case_duration }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -105,7 +104,7 @@
                     </div>
                 </div>
             </div>
-             {# Log Timeframe #}
+            {# Log Timeframe #}
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
@@ -128,37 +127,7 @@
 
         <!-- Content Row -->
         <div class="row">
-
-            <div class="col-xl-6 col-lg-6">
-                <!-- Area Chart -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Activity Instances Over Time</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-area">
-                            <canvas id="myAreaChart"></canvas>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-
-                <!-- Bar Chart -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Work-in-Progress (WIP)</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-bar">
-                            <canvas id="myBarChart"></canvas>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-xl-6 col-lg-6">
+            <div class="col-xl-12 col-lg-12">
                 <!-- Area Chart -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -166,25 +135,11 @@
                     </div>
                     <div class="card-body">
                         <div class="chart-area">
-                            <canvas id="myAreaChart"></canvas>
+                            <canvas id="case_distribution_chart"></canvas>
                         </div>
                         <hr>
                     </div>
                 </div>
-
-                <!-- Bar Chart -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Case Duration</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-bar">
-                            <canvas id="myBarChart"></canvas>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-
             </div>
 
         </div>
