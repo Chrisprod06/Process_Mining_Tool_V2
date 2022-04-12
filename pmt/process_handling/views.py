@@ -103,10 +103,10 @@ def process_model_discover(request):
             new_process_model.process_model_bpmn_file = (
                     "process_models/bpmn/" + process_model_name + ".bpmn"
             )
-            new_process_model.process_model_pnml_image = (
+            new_process_model.process_model_pnml_png = (
                     "exported_pngs/pnml/" + process_model_name + ".png"
             )
-            new_process_model.process_model_bmpn_image = (
+            new_process_model.process_model_bpmn_png = (
                     "exported_pngs/bpmn/" + process_model_name + ".png"
             )
             # Save the process model
@@ -191,9 +191,11 @@ def conformance_check(request, event_log_pk, process_model_pk):
     template = "process_handling/conformance_check.html"
     token_replay_results = pm4py_conformance.perform_token_replay(event_log_pk, process_model_pk)
     diagnostics_results = pm4py_conformance.perform_diagnostics(event_log_pk, process_model_pk)
+    aligned_traces = pm4py_conformance.perform_alignment(event_log_pk, process_model_pk)
     context = {
         "token_replay_results": token_replay_results,
-        "diagnostics_results": diagnostics_results}
+        "diagnostics_results": diagnostics_results,
+        "aligned_traces": aligned_traces}
     return render(request, template, context)
 
 

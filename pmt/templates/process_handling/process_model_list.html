@@ -31,8 +31,10 @@
                 <th>Owner</th>
                 <th>Name</th>
                 <th>Event Log</th>
-                <th>Process Model File</th>
-                <th>Process Model Image</th>
+                <th>Process Model BPMN File</th>
+                <th>Process Model PNML File</th>
+                <th>Process Model BPMN PNG</th>
+                <th>Process Model PNML PNG</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -43,14 +45,16 @@
                     <td>{{ model.process_model_owner }}</td>
                     <td>{{ model.process_model_name }}</td>
                     <td>{{ model.process_model_log_name }}</td>
-                    <td><a href="{{ model.process_model_file.url }}" class="btn btn-primary btn-sm">Download</a></td>
-                    <td><a href="{{ model.process_model_image.url }}" class="btn btn-primary btn-sm">Download</a></td>
+                    <td><a href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm">Download</a></td>
+                     <td><a href="{{ model.process_model_pnml_file.url }}" class="btn btn-primary btn-sm">Download</a></td>
+                     <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm">Download</a></td>
+                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm">Download</a></td>
                     <td>
                         <a href="{% url "process_handling:process_model_detail" model.process_model_id %}"
                            class="btn btn-info btn-sm">Detail</a>
                         <a href="{% url "process_handling:process_model_update" model.process_model_id %}"
                            class="btn btn-warning btn-sm">Update</a>
-                        <a href="#delete_process_model" class="btn btn-danger btn-sm" data-toggle="modal">Delete</a>
+                        <a href="#delete_process_model{{ model.pk }}" class="btn btn-danger btn-sm" data-toggle="modal">Delete</a>
                         {% include "process_handling/process_model_confirm_delete.html" %}
                     </td>
                 </tr>

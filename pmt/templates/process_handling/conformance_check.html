@@ -106,9 +106,10 @@
                             <td>{{ trace.trace_is_fit }}</td>
                             <td>{{ trace.trace_fitness }}</td>
                             <td>
-                                <a href="#activated_transitions" data-toggle="modal"
+                                <a href="#activated_transitions{{ forloop.counter }}" data-toggle="modal"
                                    class="btn btn-primary btn-sm">Show</a>
-                                <div class="modal fade" id="activated_transitions" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="activated_transitions{{ forloop.counter }}" tabindex="-1"
+                                     role="dialog"
                                      aria-labelledby="exampleModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -135,8 +136,10 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="#reached_marking" data-toggle="modal" class="btn btn-primary btn-sm">Show</a>
-                                <div class="modal fade" id="reached_marking" tabindex="-1" role="dialog"
+                                <a href="#reached_marking{{ forloop.counter }}" data-toggle="modal"
+                                   class="btn btn-primary btn-sm">Show</a>
+                                <div class="modal fade" id="reached_marking{{ forloop.counter }}" tabindex="-1"
+                                     role="dialog"
                                      aria-labelledby="exampleModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -162,9 +165,10 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="#enabled_transitions_marking" data-toggle="modal"
+                                <a href="#enabled_transitions_marking{{ forloop.counter }}" data-toggle="modal"
                                    class="btn btn-primary btn-sm">Show</a>
-                                <div class="modal fade" id="enabled_transitions_marking" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="enabled_transitions_marking{{ forloop.counter }}"
+                                     tabindex="-1" role="dialog"
                                      aria-labelledby="exampleModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -191,9 +195,10 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="#transitions_problems" data-toggle="modal"
+                                <a href="#transitions_problems{{ forloop.counter }}" data-toggle="modal"
                                    class="btn btn-primary btn-sm">Show</a>
-                                <div class="modal fade" id="transitions_problems" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="transitions_problems{{ forloop.counter }}" tabindex="-1"
+                                     role="dialog"
                                      aria-labelledby="exampleModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -232,12 +237,78 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h3 class="h3 mb-0 text-gray-800">Diagnostics</h3>
         </div>
-    {% for trans in diagnostics_results.trans_diagnostics %}
-        <p>{{ trans }}</p>
-    {% endfor %}
+        {% for trans in diagnostics_results.trans_diagnostics %}
+            <p>{{ trans }}</p>
+        {% endfor %}
         <p>{{ diagnostics_results }}</p>
 
-    </div>
-    <!-- End of Main Content -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h3 class="h3 mb-0 text-gray-800">Alignment</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="table_aligned_traces" class="display">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Alignment</th>
+                        <th>Cost</th>
+                        <th>Visited States</th>
+                        <th>Queued States</th>
+                        <th>Traversed Arcs</th>
+                        <th>LP Solved</th>
+                        <th>Fitness</th>
+                        <th>BWC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for alignment_trace in aligned_traces %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <a href="#activated_transitions{{ forloop.counter }}" data-toggle="modal"
+                                   class="btn btn-primary btn-sm">Show</a>
+                                <div class="modal fade" id="activated_transitions{{ forloop.counter }}" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Alignment</h5>
+                                                <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% for classification in alignment_trace.alignment %}
+                                                    <p>{{ classification }}</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" data-dismiss="modal">Ok
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ alignment_trace.cost }}</td>
+                            <td>{{ alignment_trace.visited_states }}</td>
+                            <td>{{ alignment_trace.queued_states }}</td>
+                            <td>{{ alignment_trace.traversed_arcs }}</td>
+                            <td>{{ alignment_trace.lp_solved }}</td>
+                            <td>{{ alignment_trace.fitness }}</td>
+                            <td>{{ alignment_trace.bwc }}</td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <!-- End of Main Content -->
 
 {% endblock %}

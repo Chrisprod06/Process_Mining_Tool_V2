@@ -1,14 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from django.shortcuts import redirect, render
-
+from django.urls import reverse_lazy
 # Create your views here.
 
 
 def register(request):
     """Function for handing user registration"""
-    redirect_register_url = "/accounts/register"
-    redirect_login_url = "/accounts/login"
     template = "accounts/register.html"
 
     if request.method == "POST":
@@ -22,11 +20,11 @@ def register(request):
         # Check if password is same with repeat password, and email is unique then continue
         if password != repeat_password:
             messages.error(request, "Passwords must match!")
-            return redirect(redirect_register_url)
+            return redirect(reverse_lazy("accounts:register"))
         else:
             if User.objects.filter(email=email).exists():
                 messages.error(request, "Email already exists!")
-                return redirect(redirect_register_url)
+                return redirect(reverse_lazy("accounts:register"))
             else:
                 user = User.objects.create_user(
                     username=username,
@@ -37,15 +35,13 @@ def register(request):
                 )
                 user.save()
                 messages.success(request, "Account created successfully!")
-                return redirect(redirect_login_url)
+                return redirect(reverse_lazy("accounts:login"))
     else:
         return render(request, template)
 
 
 def login(request):
     """Function for handling user login"""
-    redirect_login_url = "/accounts/login"
-    redirect_login_success = "/"
     template = "accounts/login.html"
 
     if request.method == "POST":
@@ -56,12 +52,12 @@ def login(request):
 
         if user is None:
             messages.error(request, "Wrong credentials! Please try again.")
-            return redirect(redirect_login_url)
+            return redirect(reverse_lazy("accounts:login"))
 
         else:
             auth.login(request, user)
             messages.success(request, "Login successful!")
-            return redirect(redirect_login_success)
+            return redirect(reverse_lazy("core:index"))
 
     return render(request, template)
 
@@ -73,6 +69,5 @@ def forgot_password(request):
 
 def logout(request):
     """Function for logging out the user"""
-    redirect_url = "/accounts/login"
     auth.logout(request)
-    return redirect(redirect_url)
+    return redirect(reverse_lazy("accounts:login"))
