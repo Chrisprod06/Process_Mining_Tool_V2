@@ -109,6 +109,20 @@
                 </div>
             </div>
         </li>
+         <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSimulation"
+               aria-expanded="true" aria-controls="collapseSimulation">
+                <i class="fab fa-cc-discover"></i>
+                <span>Simulation</span>
+            </a>
+            <div id="collapseSimulation" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'process_handling:playout_simulation' %}">Play-out</a>
+                </div>
+            </div>
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">

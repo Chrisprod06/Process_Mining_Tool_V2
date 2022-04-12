@@ -61,6 +61,12 @@ urlpatterns = [
         "conformance_check_select",
         views.conformance_check_select,
         name="conformance_check_select"
+    ),
+    # Simulation urls
+    path(
+        "playout_simulation",
+        views.playout_simulation,
+        name="playout_simulation"
     )
 
 ]

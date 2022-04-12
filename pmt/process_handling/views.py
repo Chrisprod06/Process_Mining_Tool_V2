@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from .forms import ProcessModelForm, DiscoverProcessModelForm, SelectEventLogAndProcessModelForm
+from .forms import ProcessModelForm, DiscoverProcessModelForm, SelectEventLogAndProcessModelForm, PlayoutDetailsForm
 from .models import ProcessModel
 from core import pm4py_discovery, pm4py_statistics, pm4py_conformance
 from data_handling.forms import SelectEventLogForm
@@ -225,4 +225,13 @@ def conformance_check_select(request):
                 )
             )
 
+    return render(request, template, context)
+
+
+def playout_simulation(request):
+    """View to handle playout simulation of a process model"""
+    template = "process_handling/playout_simulation.html"
+    playout_details_form = PlayoutDetailsForm()
+
+    context = {"playout_details_form": playout_details_form}
     return render(request, template, context)
