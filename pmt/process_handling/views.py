@@ -98,10 +98,10 @@ def process_model_discover(request):
             pm4py_discovery.process_model_discovery(event_log_name, process_model_name)
             # Save new model
             new_process_model.process_model_pnml_file = (
-                    "process_models/pnml/" + process_model_name + ".pnml"
+                "process_models/pnml/" + process_model_name + ".pnml"
             )
             new_process_model.process_model_bpmn_file = (
-                    "process_models/bpmn/" + process_model_name + ".bpmn"
+                "process_models/bpmn/" + process_model_name + ".bpmn"
             )
             new_process_model.process_model_pnml_png = (
                     "exported_pngs/pnml/" + process_model_name + ".png"
