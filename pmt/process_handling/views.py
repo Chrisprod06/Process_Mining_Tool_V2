@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from .forms import ProcessModelForm, DiscoverProcessModelForm, SelectEventLogAndProcessModelForm, PlayoutDetailsForm
 from .models import ProcessModel
-from core import pm4py_discovery, pm4py_statistics, pm4py_conformance
+from core import pm4py_discovery, pm4py_statistics, pm4py_conformance, pm4py_simulation
 from data_handling.forms import SelectEventLogForm
 from data_handling.models import EventLog
 
@@ -232,6 +232,25 @@ def playout_simulation(request):
     """View to handle playout simulation of a process model"""
     template = "process_handling/playout_simulation.html"
     playout_details_form = PlayoutDetailsForm()
+
+    if request.method == "POST":
+        playout_details_form = PlayoutDetailsForm(request.POST)
+        if playout_details_form.is_valid():
+            playout = playout_details_form.cleaned_data["type_of_playout"]
+            process_model_pk = playout_details_form.cleaned_data["process_model"]
+            num_traces = playout_details_form.cleaned_data["number_of_traces"]
+            pm4py_simulation.playout_petri_net(process_model_pk, playout, num_traces)
+
+            process_model = ProcessModel.objects.get(process_model_id=process_model_pk)
+            simulated_event_log = EventLog()
+            simulated_event_log.event_log_owner = process_model.process_model_owner
+            simulated_event_log.event_log_name = process_model.process_model_name + "_simulated_event_log"
+            simulated_log_name = process_model.process_model_name + "_simulated_event_log"
+            simulated_event_log.event_log_file = "event_logs/" + simulated_log_name + ".xes"
+            simulated_event_log.save()
+
+            messages.success(request, "Playout Petri Net Successful!")
+            return redirect(reverse_lazy("data_handling:event_log_list"))
 
     context = {"playout_details_form": playout_details_form}
     return render(request, template, context)
