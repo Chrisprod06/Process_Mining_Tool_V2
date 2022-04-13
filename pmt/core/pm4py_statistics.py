@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from django.conf import settings
@@ -143,6 +144,19 @@ def calculate_statistics(event_log_id) -> dict:
         "x": x,
         "y": y
     }
+    # Get 2 lists of coordinates
+    x = case_duration_graph_data["x"]
+    y = case_duration_graph_data["y"]
+    # Parse into a list of tuples which represent points
+    points_case_duration_graph_tuples = list(zip(x, y))
+    # Convert them into a list of dictionaries for chart.js data
+    points_case_duration_graph = []
+    for index, point in enumerate(points_case_duration_graph_tuples):
+        points_case_duration_graph.append({
+            "x": point[0],
+            "y": point[1]
+        })
+    points_case_duration_graph = json.dumps(points_case_duration_graph)
 
     statistics_results = {
         "all_cases_durations": all_cases_duration,
@@ -153,89 +167,7 @@ def calculate_statistics(event_log_id) -> dict:
         "median_case_duration": median_case_duration,
         "average_case_duration": average_case_duration,
         "max_case_duration": max_case_duration,
-        "case_duration_graph_data": case_duration_graph_data
+        "points_case_duration_graph": points_case_duration_graph
     }
 
     return statistics_results
-
-
-# Single timestamp statistics
-
-
-def calculate_median_case_duration(log):
-    """Function to calculate the median case duration"""
-    return case_statistics.get_all_casedurations(
-        log,
-        parameters={case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"},
-    )
-
-
-def calculate_case_arrival_ratio(log):
-    """Function to calculate the case arrival ratio"""
-    return case_arrival.get_case_arrival_avg(
-        log, parameters={case_arrival.Parameters.TIMESTAMP_KEY: "time:timestamp"}
-    )
-
-
-def calculate_case_dispersion_ratio(log):
-    """Function to calculate the case dispersion ratio"""
-    return case_arrival.get_case_dispersion_avg(
-        log, parameters={case_arrival.Parameters.TIMESTAMP_KEY: "time:timestamp"}
-    )
-
-
-# Interval logs statistics
-
-
-def calculate_business_hours(log):
-    """Function to calculate statistics derived from business hours"""
-    st = datetime.fromtimestamp(100000000)
-    et = datetime.fromtimestamp(200000000)
-    # bh_object = BusinessHours(st, et, worktiming=[10, 16], weekends=[5, 6, 7]) specifying work time and work days
-    bh_object = BusinessHours(st, et)
-    worked_time = bh_object.getseconds()
-    return worked_time
-
-
-def calculate_cycle_time(log):
-    """Function to enrich the given event log with cycle time attributes"""
-    return interval_lifecycle.assign_lead_cycle_time(log)
-
-
-def calculate_sojourn_time(log):
-    """Function to calculate sojourn time"""
-    return soj_time_get.apply(
-        log,
-        parameters={
-            soj_time_get.Parameters.TIMESTAMP_KEY: "time:timestamp",
-            soj_time_get.Parameters.START_TIMESTAMP_KEY: "start_timestamp",
-        },
-    )
-
-
-def calculate_concurrent_activities(log):
-    """Function to calculate concurrent activities"""
-    return conc_act_get.apply(
-        log,
-        parameters={
-            conc_act_get.Parameters.TIMESTAMP_KEY: "time:timestamp",
-            conc_act_get.Parameters.START_TIMESTAMP_KEY: "start_timestamp",
-        },
-    )
-
-
-# Graphs
-def calculate_eventually_follows_graph(log):
-    """Function to calculate eventually follows graph"""
-    print(efg_get.apply(log))
-    return
-
-
-def calculate_distribution_case_duration_graph(log):
-    """Function to calculate the distribution of case duration graph"""
-    x, y = case_statistics.get_kde_caseduration(
-        log, parameters={constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: "time:timestamp"}
-    )
-    gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.CASES)
-    graphs_visualizer.save(gviz, "PMT/media/graphs")
-    return

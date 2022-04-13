@@ -1,14 +1,18 @@
-const CHART = document.getElementById("case_distribution_chart");
-console.log(CHART);
-const labels = Utils.months({count: 7});
-let lineChart = new Chart(CHART, {
-    type: "line",
-    labels: labels,
-    datasets: [{
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-    }]
+let graph_data = document.getElementById("points_case_duration_graph").value;
+console.log(graph_data)
+new Chart(document.getElementById("line-chart"), {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'Scatter Dataset',
+            data: graph_data,
+            backgroundColor: 'rgb(255, 99, 132)'
+        }],
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'World population per region (in millions)'
+        }
+    }
 });

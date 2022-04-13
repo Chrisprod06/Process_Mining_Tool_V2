@@ -92,10 +92,14 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Case Duration
                                 </div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Min {{ statistics_results.min_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Median {{ statistics_results.median_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Average {{ statistics_results.average_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Max {{ statistics_results.max_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    Min {{ statistics_results.min_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    Median {{ statistics_results.median_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    Average {{ statistics_results.average_case_duration }}</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    Max {{ statistics_results.max_case_duration }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -124,24 +128,12 @@
                 </div>
             </div>
         </div>
-
-        <!-- Content Row -->
         <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <!-- Area Chart -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Case Variants</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-area">
-                            <canvas id="case_distribution_chart"></canvas>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
+            <div class="col-lg-12">
+                <input type="hidden"id = "points_case_duration_graph" value="{{ statistics_results.points_case_duration_graph }}">
+                <h2>Case Duration Distribution</h2>
+                <canvas id="line-chart" width="800" height="250"></canvas>
             </div>
-
         </div>
         <!-- /.container-fluid -->
 
