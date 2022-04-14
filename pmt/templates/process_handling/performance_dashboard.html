@@ -21,9 +21,6 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_case }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,9 +37,6 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_variants }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,9 +51,6 @@
                                     Activity Instances
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -76,9 +67,6 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,19 +78,16 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Case Duration
+                                    Case Duration (h)
                                 </div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Min {{ statistics_results.min_case_duration }}</div>
+                                    Min: {{ statistics_results.min_case_duration }}</div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Median {{ statistics_results.median_case_duration }}</div>
+                                    Median: {{ statistics_results.median_case_duration }}</div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Average {{ statistics_results.average_case_duration }}</div>
+                                    Average: {{ statistics_results.average_case_duration }}</div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Max {{ statistics_results.max_case_duration }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    Max: {{ statistics_results.max_case_duration }}</div>
                             </div>
                         </div>
                     </div>
@@ -120,23 +105,27 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">Start: 02/2/22</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">End: 08/2/22</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
-                <input type="hidden"id = "points_case_duration_graph" value="{{ statistics_results.points_case_duration_graph }}">
-                <h2>Case Duration Distribution</h2>
-                <canvas id="line-chart" width="800" height="250"></canvas>
+            <div class="col-lg-6">
+                <input type="hidden" id="points_case_duration_graph"
+                       value="{{ statistics_results.points_case_duration_graph }}">
+                <script>
+                    let points_case_duration_graph ={{ statistics_results.points_case_duration_graph|safe }};
+                </script>
+                <canvas id="case_duration_graph" width="800" height="400"></canvas>
+            </div>
+              <div class="col-lg-6">
+                <script>
+                    let points_events_over_time_graph ={{ statistics_results.points_events_over_time_graph|safe }};
+                </script>
+                <canvas id="events_over_time_graph" width="800" height="400"></canvas>
             </div>
         </div>
-        <!-- /.container-fluid -->
-
     </div>
     <!-- End of Main Content -->
 
