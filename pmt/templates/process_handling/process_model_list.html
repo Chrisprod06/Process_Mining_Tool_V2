@@ -10,13 +10,15 @@
             <h1 class="h3 mb-0 text-gray-800">Process Models</h1>
             <div class="row">
                 <div>
-                    <a href="{% url 'process_handling:process_model_create' %}" class="btn btn-primary"> Upload new
+                    <a href="{% url 'process_handling:process_model_create' %}" class="btn btn-primary"><span
+                            class="material-icons icon-span">add_circle_outline</span> Upload new
                         Process
                         Model</a>
                 </div>
                 <div class=ml-3>
                     <a href="{% url 'process_handling:process_model_discover' %}" class="btn btn-primary">
-                        Discover new Process
+                        <span
+                            class="material-icons icon-span">search</span> <span></span>Discover new Process
                         Model</a>
                 </div>
             </div>
@@ -45,16 +47,21 @@
                     <td>{{ model.process_model_owner }}</td>
                     <td>{{ model.process_model_name }}</td>
                     <td>{{ model.process_model_log_name }}</td>
-                    <td><a href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm">Download</a></td>
-                     <td><a href="{{ model.process_model_pnml_file.url }}" class="btn btn-primary btn-sm">Download</a></td>
-                     <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm">Download</a></td>
-                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm">Download</a></td>
+                    <td><a href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm"><span
+                            class="material-icons">file_download</span></a></td>
+                    <td><a href="{{ model.process_model_pnml_file.url }}" class="btn btn-primary btn-sm"><span
+                            class="material-icons">file_download</span></a></td>
+                    <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm"><span
+                            class="material-icons">file_download</span></a></td>
+                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm"><span
+                            class="material-icons">file_download</span></a></td>
                     <td>
                         <a href="{% url "process_handling:process_model_detail" model.process_model_id %}"
-                           class="btn btn-info btn-sm">Detail</a>
+                           class="btn btn-info btn-sm"><span class="material-icons">visibility</span></a>
                         <a href="{% url "process_handling:process_model_update" model.process_model_id %}"
-                           class="btn btn-warning btn-sm">Update</a>
-                        <a href="#delete_process_model{{ model.pk }}" class="btn btn-danger btn-sm" data-toggle="modal">Delete</a>
+                           class="btn btn-warning btn-sm"><span class="material-icons">edit</span></a>
+                        <a href="#delete_process_model{{ model.pk }}" class="btn btn-danger btn-sm" data-toggle="modal"><span
+                                class="material-icons">delete</span></a>
                         {% include "process_handling/process_model_confirm_delete.html" %}
                     </td>
                 </tr>

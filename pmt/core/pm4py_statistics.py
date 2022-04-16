@@ -33,8 +33,8 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_handover_work = sna_visualizer.apply(
         handover_work_values, variant=sna_visualizer.Variants.PYVIS,
     )
-    sna_visualizer.view(gviz_handover_work,
-                        variant=sna_visualizer.Variants.PYVIS)
+    # sna_visualizer.view(gviz_handover_work,
+    #                    variant=sna_visualizer.Variants.PYVIS)
 
     # Calculate subcontracting
     subcontracting_values = sna.apply(
@@ -43,7 +43,7 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_subcontracting = sna_visualizer.apply(
         subcontracting_values, variant=sna_visualizer.Variants.PYVIS
     )
-    sna_visualizer.view(gviz_subcontracting, variant=sna_visualizer.Variants.PYVIS)
+    # sna_visualizer.view(gviz_subcontracting, variant=sna_visualizer.Variants.PYVIS)
 
     # Calculate working together
     working_together_values = sna.apply(
@@ -52,7 +52,7 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_working_together = sna_visualizer.apply(
         working_together_values, variant=sna_visualizer.Variants.PYVIS
     )
-    sna_visualizer.view(gviz_working_together, variant=sna_visualizer.Variants.PYVIS)
+    # sna_visualizer.view(gviz_working_together, variant=sna_visualizer.Variants.PYVIS)
 
     # Calculate similar activities
     similar_activities_values = sna.apply(
@@ -61,8 +61,8 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_similar_activities_values = sna_visualizer.apply(
         similar_activities_values, variant=sna_visualizer.Variants.PYVIS
     )
-    sna_visualizer.view(
-        gviz_similar_activities_values, variant=sna_visualizer.Variants.PYVIS)
+    # sna_visualizer.view(
+    #    gviz_similar_activities_values, variant=sna_visualizer.Variants.PYVIS)
 
     # Discover roles
     roles = roles_discovery.apply(event_log)

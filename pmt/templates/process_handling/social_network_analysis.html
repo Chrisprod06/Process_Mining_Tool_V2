@@ -8,9 +8,67 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Social Network Analysis</h1>
         </div>
-        {% for role in social_network_analysis_results.roles%}
-            {{ role }}
-        {% endfor %}
+    <h2>Role Discovery</h2>
+        {# Table presenting process models #}
+        <table id="table_process_models" class="display">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Activity</th>
+                <th>Resources</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for role in social_network_analysis_results.roles %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ role.0.0 }}</td>
+                    </td>
+                    <td>
+                        <a href="#show_resources{{ forloop.counter }}" data-toggle="modal"
+                           class="btn btn-primary btn-sm">Detail</a>
+                        <div id="show_resources{{ forloop.counter }}" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    {# Modal Header #}
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Resources used by activity</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    {# Modal Body #}
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                {% for resource,count in role.1.items %}
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item">{{ resource }}</li>
+                                                    </ul>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="col-lg-6">
+                                                {% for resource,count in role.1.items %}
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item">{{ count }}</li>
+                                                    </ul>
+                                                {% endfor %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    {# Modal footer #}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
     </div>
     <!-- End of Main Content -->

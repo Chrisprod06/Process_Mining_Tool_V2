@@ -67,6 +67,16 @@ urlpatterns = [
         "playout_simulation",
         views.playout_simulation,
         name="playout_simulation"
+    ),
+    path(
+        "monte_carlo_simulation_select",
+        views.monte_carlo_simulation_select,
+        name="monte_carlo_simulation_select"
+    ),
+    path(
+        "monte_carlo_simulation/<str:event_log_pk>",
+        views.monte_carlo_simulation,
+        name="monte_carlo_simulation"
     )
 
 ]

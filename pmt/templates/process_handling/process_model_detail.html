@@ -2,22 +2,54 @@
 {% load crispy_forms_tags %}
 {% block title %}<title>PMT | Process Model Visualization</title>{% endblock %}
 {% block content %}
-    <h1>Process Model: {{ process_model }}</h1>
     <div class="container-fluid">
         {# Details start #}
         <section id="details ">
             <div class="row mb-5">
-                <div class="col-4">
-                    <p>Process Model Name: {{ process_model.process_model_name }} </p>
+                {# Event Log Name #}
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Process Model Name
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_name }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <p>Process Model Owner: {{ process_model.process_model_owner }}</p>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Process Model Owner
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_owner }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <p>Event Log Name: {{ process_model.process_model_log_name }}</p>
+                {# Event Log Owner #}
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Event Log Name
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_log_name }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
         </section>
         {# Details end #}
