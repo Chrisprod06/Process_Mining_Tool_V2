@@ -38,6 +38,10 @@ class SelectFiltersFormDate(forms.Form):
 class SelectFiltersFormDuration(forms.Form):
     min_duration = forms.CharField(label="Minimum Duration", required=False)
     max_duration = forms.CharField(label="Maximum Duration", required=False)
+    days = forms.BooleanField(label="Days", required=False)
+    hours = forms.BooleanField(label="Hours", required=False)
+    minutes = forms.BooleanField(label="Minutes", required=False)
+    seconds = forms.BooleanField(label="Seconds", required=False)
     file_name = forms.CharField(label="file name:")
 
 
@@ -51,11 +55,18 @@ class SelectFiltersFormStartEnd(forms.Form):
 
 class SelectFiltersFormAttributes(forms.Form):
     selected_attribute = forms.CharField(label="Attribute")
+    activity_name = forms.BooleanField(label="activity", required=False)
+    activity_resource = forms.BooleanField(label="resource", required=False)
     activity_containing = forms.BooleanField(label="Containing", required=False)
     activity_not_containing = forms.BooleanField(label="Not Containing", required=False)
     file_name = forms.CharField(label="file name:")
 
 
 class SelectFiltersFormVariant(forms.Form):
-    variant = forms.CharField()
+    selected_variant = forms.CharField()
+    file_name = forms.CharField(label="file name:")
+
+
+class SelectFiltersFormNumeric(forms.Form):
+    selected_number = forms.CharField(label="number:")
     file_name = forms.CharField(label="file name:")

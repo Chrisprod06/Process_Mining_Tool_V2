@@ -3,4 +3,5 @@
         $('#table_process_models').DataTable();
         $('#table_replayed_traces').DataTable();
         $('#table_aligned_traces').DataTable();
+        $('#table_variants').DataTable();
     });

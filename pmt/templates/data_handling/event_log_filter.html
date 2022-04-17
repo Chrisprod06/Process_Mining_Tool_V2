@@ -69,12 +69,33 @@
                         </form>
                     </div>
                     <div class="tab-pane fade" id="variant" role="tabpanel" aria-labelledby="variant-tab">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            {{ form_variant|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
-                                   id="submitFilterEventLog">
-                        </form>
+                        {% if variants_count %}
+                            <table id="table_variants" class="display">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Variant</th>
+                                    <th>Count</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for variant in variants_count %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ variant.variant }}</td>
+                                        <td>{{ variant.count }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{ form_variant|crispy }}
+                                <input type="submit" class="btn btn-success" value="Submit" name="submitFilterVariants"
+                                       id="submitFilterVariants">
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
