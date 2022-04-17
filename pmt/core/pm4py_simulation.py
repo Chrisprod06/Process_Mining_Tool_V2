@@ -6,7 +6,7 @@ from pm4py.statistics.start_activities.log import get as start_activities
 from pm4py.statistics.end_activities.log import get as end_activities
 from pm4py.statistics.traces.generic.log import case_arrival
 from pm4py.objects.conversion.dfg import converter
-from pm4py.algo.simulation.montecarlo import simulator as montecarlo_simulation
+from pm4py.algo.simulation.montecarlo import algorithm as montecarlo_simulation
 from pm4py.algo.conformance.tokenreplay.algorithm import Variants
 from pm4py.objects.petri_net.importer import importer as pnml_importer
 from data_handling.models import EventLog

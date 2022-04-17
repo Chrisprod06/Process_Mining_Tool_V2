@@ -1,13 +1,15 @@
 import datetime
 import json
 
+import pm4py
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.variants import variants_filter
+
 from pm4py.visualization.sna import visualizer as sna_visualizer
 from pm4py.util import constants
-
+from pm4py.statistics.rework.cases.log import get as get_rework_cases
 from pm4py.algo.organizational_mining.sna import algorithm as sna
 from pm4py.algo.organizational_mining.roles import algorithm as roles_discovery
 
@@ -108,10 +110,20 @@ def calculate_statistics(event_log_id) -> dict:
     for variant in case_variants:
         count_variants += variant["count"]
 
-    # Calculate activity instances
+    # Calculate Rework activities
+    rework_activities = pm4py.get_rework_cases_per_activity(event_log)
+    rework_activities_counter = 0
+    for activity, count in rework_activities.items():
+        rework_activities_counter = rework_activities_counter + count
+    # Calculate Rework cases
+    rework_cases = get_rework_cases.apply(event_log)
+    rework_cases_counter = 0
+    for case, activities in rework_cases.items():
+        for activity,count in activities.items():
+            rework_cases_counter = rework_cases_counter + count
 
-    # Calculate number of activities
-
+    print(rework_activities)
+    print(rework_cases)
     # Calculate case duration
     # Min
     min_case_duration = min(all_cases_duration)
@@ -181,7 +193,12 @@ def calculate_statistics(event_log_id) -> dict:
         "average_case_duration": average_case_duration,
         "max_case_duration": max_case_duration,
         "points_case_duration_graph": points_case_duration_graph,
-        "points_events_over_time_graph": points_events_over_time_graph
+        "points_events_over_time_graph": points_events_over_time_graph,
+        "rework_activities": rework_activities,
+        "rework_cases": rework_cases,
+        "rework_activities_counter": rework_activities_counter,
+        "rework_cases_counter": rework_cases_counter
+
     }
 
     return statistics_results
