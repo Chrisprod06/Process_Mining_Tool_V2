@@ -20,6 +20,7 @@
                 <th>ID</th>
                 <th>Owner ID</th>
                 <th>Name</th>
+                <th>Type</th>
                 <th>File</th>
                 <th>Actions</th>
             </tr>
@@ -31,6 +32,7 @@
                         <td>{{ log.event_log_id }}</td>
                         <td>{{ log.event_log_owner_id }}</td>
                         <td>{{ log.event_log_name }}</td>
+                         <td>{{ log.event_log_type }}</td>
                         <td><a href="{{ log.event_log_file.url }}" class="btn btn-primary btn-sm"><span class="material-icons">file_download</span></a>
                         </td>
                         <td>
