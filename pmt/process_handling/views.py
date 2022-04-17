@@ -98,10 +98,10 @@ def process_model_discover(request):
             pm4py_discovery.process_model_discovery(event_log_name, process_model_name)
             # Save new model
             new_process_model.process_model_pnml_file = (
-                "process_models/pnml/" + process_model_name + ".pnml"
+                    "process_models/pnml/" + process_model_name + ".pnml"
             )
             new_process_model.process_model_bpmn_file = (
-                "process_models/bpmn/" + process_model_name + ".bpmn"
+                    "process_models/bpmn/" + process_model_name + ".bpmn"
             )
             new_process_model.process_model_pnml_png = (
                     "exported_pngs/pnml/" + process_model_name + ".png"
@@ -253,4 +253,48 @@ def playout_simulation(request):
             return redirect(reverse_lazy("data_handling:event_log_list"))
 
     context = {"playout_details_form": playout_details_form}
+    return render(request, template, context)
+
+
+def monte_carlo_simulation_select(request):
+    """View to handle preparation of simulation"""
+    template = "process_handling/monte_carlo_simulation_form.html"
+    select_event_log_form = SelectEventLogForm()
+    if request.method == "POST":
+        select_event_log_form = SelectEventLogForm(request.POST)
+        if select_event_log_form.is_valid():
+            event_log_name = select_event_log_form.cleaned_data["event_log"]
+            event_log = EventLog.objects.get(event_log_name=event_log_name)
+            selected_event_log_id = event_log.event_log_id
+
+
+            return redirect(
+                reverse_lazy(
+                    "process_handling:monte_carlo_simulation",
+                    kwargs={"event_log_pk": selected_event_log_id}
+                )
+            )
+    context = {
+        "select_event_log_form": select_event_log_form
+    }
+    return render(request, template, context)
+
+
+def monte_carlo_simulation(request, event_log_pk):
+    """View to handle monte carlo simulation"""
+    template = "process_handling/monte_carlo_simulation.html"
+    selected_event_log = EventLog.objects.get(pk=event_log_pk)
+
+    simulation_results = pm4py_simulation.perform_monte_carlo_simulation(event_log_pk)
+
+    simulated_event_log = EventLog()
+    simulated_event_log.event_log_owner = selected_event_log.event_log_owner
+    simulated_event_log.event_log_name = selected_event_log.event_log_name + "_simulated_monte_carlo_event_log"
+    simulated_log_name = simulated_event_log.event_log_name + "_simulated_monte_carlo_event_log"
+    simulated_event_log.event_log_file = "event_logs/" + simulated_log_name + ".xes"
+    simulated_event_log.save()
+
+    context = {
+        "simulation_results": simulation_results
+    }
     return render(request, template, context)

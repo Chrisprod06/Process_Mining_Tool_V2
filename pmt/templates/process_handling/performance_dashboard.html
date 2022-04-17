@@ -48,9 +48,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Activity Instances
+                                    <a href="#view_rework_cases" data-toggle="modal"><span
+                                            class="material-icons icon-span">visibility</span></a>
+                                    <span>Rework (Activities) </span>
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.rework_activities_counter }}</div>
                             </div>
                         </div>
                     </div>
@@ -63,9 +65,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Activities
+                                    <a href="#view_rework_cases" data-toggle="modal"><span
+                                            class="material-icons icon-span">visibility</span></a>
+                                    <span>Rework (cases) </span>
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.rework_cases_counter }}</div>
                             </div>
                         </div>
                     </div>
@@ -119,11 +123,85 @@
                 </script>
                 <canvas id="case_duration_graph" width="800" height="400"></canvas>
             </div>
-              <div class="col-lg-6">
+            <div class="col-lg-6">
                 <script>
                     let points_events_over_time_graph ={{ statistics_results.points_events_over_time_graph|safe }};
                 </script>
                 <canvas id="events_over_time_graph" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <div id="view_rework_activities" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Rework (Activities)</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table id="table_rework_activities" class="display">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Activity</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for activity,count in statistics_results.rework_activities.items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ activity }}</td>
+                                <td>{{ count }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view_rework_cases" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Rework (Cases)</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table id="table_rework_cases" class="display">
+                        <thead>
+                        <tr>
+                            <th>Case No.</th>
+                            <th>Activity</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for case,activities in statistics_results.rework_cases.items %}
+                            {% for activity,count in activities.items %}
+                                <tr>
+                                    <td>{{ forloop.parentloop.counter }}</td>
+                                    <td>{{ activity }}</td>
+                                    <td>{{ count }}</td>
+                                </tr>
+                            {% endfor %}
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
             </div>
         </div>
     </div>
