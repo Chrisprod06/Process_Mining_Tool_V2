@@ -12,7 +12,9 @@ from pm4py.util import constants
 from pm4py.statistics.rework.cases.log import get as get_rework_cases
 from pm4py.algo.organizational_mining.sna import algorithm as sna
 from pm4py.algo.organizational_mining.roles import algorithm as roles_discovery
-
+from pm4py.statistics.sojourn_time.log import get as soj_time_get
+from pm4py.statistics.concurrent_activities.log import get as conc_act_get
+from pm4py.algo.discovery.batches import algorithm as discover_batches
 from data_handling.models import EventLog
 
 from statistics import median
@@ -119,7 +121,7 @@ def calculate_statistics(event_log_id) -> dict:
     rework_cases = get_rework_cases.apply(event_log)
     rework_cases_counter = 0
     for case, activities in rework_cases.items():
-        for activity,count in activities.items():
+        for activity, count in activities.items():
             rework_cases_counter = rework_cases_counter + count
 
     print(rework_activities)
@@ -199,6 +201,37 @@ def calculate_statistics(event_log_id) -> dict:
         "rework_activities_counter": rework_activities_counter,
         "rework_cases_counter": rework_cases_counter
 
+    }
+
+    return statistics_results
+
+
+def calculate_interval_statistics(event_log_pk) -> dict:
+    """Function to calculate interval statistics"""
+    # Find log file path
+    selected_event_log = EventLog.objects.get(pk=event_log_pk)
+    selected_event_log_file = selected_event_log.event_log_file
+    selected_event_log_path = "media/" + str(selected_event_log_file)
+
+    # Import xes file
+    event_log = xes_importer.apply(selected_event_log_path)
+
+    # Calculate sojourn time
+    sojourn_time = soj_time_get.apply(event_log, parameters={soj_time_get.Parameters.TIMESTAMP_KEY: "time:timestamp",
+                                                             soj_time_get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
+
+    # Calculate concurrent activities
+    concurrent_activities = conc_act_get.apply(event_log,
+                                               parameters={conc_act_get.Parameters.TIMESTAMP_KEY: "time:timestamp",
+                                                           conc_act_get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
+
+    # Calculate batches
+    batches = discover_batches.apply(event_log)
+
+    statistics_results = {
+        "sojourn_time": sojourn_time,
+        "concurrent_activities": concurrent_activities,
+        "batches": batches
     }
 
     return statistics_results

@@ -122,8 +122,15 @@ def performance_dashboard(request, pk):
     template = "process_handling/performance_dashboard.html"
     selected_event_log = EventLog.objects.get(pk=pk)
     selected_event_log_id = selected_event_log.event_log_id
-    statistics_results = pm4py_statistics.calculate_statistics(selected_event_log_id)
+    selected_event_log_type = selected_event_log.event_log_type
 
+    statistics_interval_results = {}
+
+    statistics_single_results = pm4py_statistics.calculate_statistics(selected_event_log_id)
+    if selected_event_log_type == "interval":
+        statistics_interval_results = pm4py_statistics.calculate_interval_statistics(selected_event_log_id)
+
+    statistics_results = statistics_single_results | statistics_interval_results
     context = {"statistics_results": statistics_results}
     return render(request, template, context)
 
@@ -266,7 +273,6 @@ def monte_carlo_simulation_select(request):
             event_log_name = select_event_log_form.cleaned_data["event_log"]
             event_log = EventLog.objects.get(event_log_name=event_log_name)
             selected_event_log_id = event_log.event_log_id
-
 
             return redirect(
                 reverse_lazy(
