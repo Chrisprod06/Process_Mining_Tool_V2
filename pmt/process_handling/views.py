@@ -123,6 +123,7 @@ def performance_dashboard(request, pk):
     selected_event_log = EventLog.objects.get(pk=pk)
     selected_event_log_id = selected_event_log.event_log_id
     selected_event_log_type = selected_event_log.event_log_type
+    selected_event_log_name = selected_event_log.event_log_name
 
     statistics_interval_results = {}
 
@@ -131,7 +132,9 @@ def performance_dashboard(request, pk):
         statistics_interval_results = pm4py_statistics.calculate_interval_statistics(selected_event_log_id)
 
     statistics_results = statistics_single_results | statistics_interval_results
-    context = {"statistics_results": statistics_results}
+    context = {
+        "statistics_results": statistics_results,
+        "selected_event_log_name": selected_event_log_name}
     return render(request, template, context)
 
 
@@ -163,9 +166,11 @@ def social_network_analysis(request, pk):
     template = "process_handling/social_network_analysis.html"
     selected_event_log = EventLog.objects.get(pk=pk)
     selected_event_log_id = selected_event_log.event_log_id
+    selected_event_log_name = selected_event_log.event_log_name
     social_network_analysis_results = pm4py_statistics.calculate_social_network_analysis(selected_event_log_id)
     context = {
-        "social_network_analysis_results": social_network_analysis_results
+        "social_network_analysis_results": social_network_analysis_results,
+        "selected_event_log_name": selected_event_log_name
     }
     return render(request, template, context)
 
@@ -196,13 +201,19 @@ def social_network_analysis_select(request):
 def conformance_check(request, event_log_pk, process_model_pk):
     """View to handle te conformance check of an event log and process model"""
     template = "process_handling/conformance_check.html"
+    selected_event_log = EventLog.objects.get(pk=event_log_pk)
+    selected_process_model = ProcessModel.objects.get(pk=process_model_pk)
+    selected_event_log_name = selected_event_log.event_log_name
+    selected_process_model_name = selected_process_model.process_model_name
     token_replay_results = pm4py_conformance.perform_token_replay(event_log_pk, process_model_pk)
     diagnostics_results = pm4py_conformance.perform_diagnostics(event_log_pk, process_model_pk)
     aligned_traces = pm4py_conformance.perform_alignment(event_log_pk, process_model_pk)
     context = {
         "token_replay_results": token_replay_results,
         "diagnostics_results": diagnostics_results,
-        "aligned_traces": aligned_traces}
+        "aligned_traces": aligned_traces,
+        "selected_event_log_name": selected_event_log_name,
+        "selected_process_model_name": selected_process_model_name}
     return render(request, template, context)
 
 

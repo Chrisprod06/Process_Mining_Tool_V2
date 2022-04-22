@@ -6,10 +6,26 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Performance Dashboard - Overview</h1>
+            <h1 class="h3 mb-0 text-gray-800">Performance Dashboard</h1>
         </div>
 
-        <div class="row">
+        <div class="row text-center">
+             {# Event Log Name #}
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Event Log
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ selected_event_log_name }}</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {# Count Cases #}
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
@@ -17,7 +33,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Cases
+                                    Total Cases
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_case }}</div>
                             </div>
@@ -84,30 +100,35 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Case Duration (h)
                                 </div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Min: {{ statistics_results.min_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Median: {{ statistics_results.median_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Average: {{ statistics_results.average_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    Max: {{ statistics_results.max_case_duration }}</div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {# Log Timeframe #}
-            <div class="col-xl-2 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Log Timeframe
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">Start: 02/2/22</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">End: 08/2/22</div>
+
+                            <div>
+                                <dl class="row ">
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Min:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.min_case_duration }}
+                                    </dd>
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Med:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.median_case_duration }}
+                                    </dd>
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Avg:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.average_case_duration }}
+                                    </dd>
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Max:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.max_case_duration }}
+                                    </dd>
+                                </dl>
                             </div>
                         </div>
                     </div>

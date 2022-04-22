@@ -97,7 +97,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics"
                aria-expanded="true" aria-controls="collapseStatistics">
-               <span class="material-icons">analytics</span>
+                <span class="material-icons">analytics</span>
                 <span>Statistics</span>
             </a>
             <div id="collapseStatistics" class="collapse" aria-labelledby="headingUtilities"
@@ -114,7 +114,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSimulation"
                aria-expanded="true" aria-controls="collapseSimulation">
-              <span class="material-icons">calculate</span>
+                <span class="material-icons">calculate</span>
                 <span>Simulation</span>
             </a>
             <div id="collapseSimulation" class="collapse" aria-labelledby="headingUtilities"
@@ -175,18 +175,18 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }} {{ user.last_name }}</span>
                             {% endif %}
                             <img class="img-profile rounded-circle"
-                                 src="{% static 'img/undraw_profile.svg' %}">
+                                 src="{% static 'img/profile.jpg' %}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
+                            <a class="dropdown-item" href=" {% url "core:change_password" user.pk %}">
+                                <span class="material-icons small">vpn_key</span>
+                                Change Password
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                               <span class="material-icons small">logout</span>
                                 Logout
                             </a>
                         </div>
@@ -206,7 +206,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Christophoros Prodromou | Stefanos Avraam</span>
+                    <span>&copy; Christophoros Prodromou & Stefanos Avraam 2022. All Rights Reserved.</span>
                 </div>
             </div>
         </footer>
