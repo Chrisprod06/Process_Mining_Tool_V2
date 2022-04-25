@@ -8,11 +8,108 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Monte Carlo Simulation</h1>
         </div>
+        <div class="row">
+            {# Event Log Name #}
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Event Log Name
+                                </div>
+                                <div class=" mb-0 font-weight-bold text-gray-800">{{ simulated_event_log.event_log_name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {# Event Log Owner #}
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Event Log Type
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ simulated_event_log.event_log_type }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Median Case Ex Time
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ simulation_results.median_cases_ex_time }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Case Arrival Ratio
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ simulation_results.input_case_arrival_ratio }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total cases time
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ simulation_results.total_cases_time }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="table_cases_ex_time" class="display text-center">
+                    <thead>
+                    <tr>
+                        <th>Case No.</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for time in simulation_results.cases_ex_time %}
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ time }}</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="font-weight-bolder" for="content">Event Log Content:</label>
+                <textarea class="form-control" name="content" id="content" cols="" rows="25">
+                    {{ event_log_file_content }}
+                </textarea>
 
-    {% for key,value in simulation_results.items %}
-        <p>{{ key }}</p>
-        <p>{{ value }}</p>
-    {% endfor %}
+            </div>
+        </div>
+
 
     </div>
     <!-- End of Main Content -->

@@ -47,13 +47,13 @@
                     <td>{{ model.process_model_owner }}</td>
                     <td>{{ model.process_model_name }}</td>
                     <td>{{ model.process_model_log_name }}</td>
-                    <td><a href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm"><span
+                    <td><a  href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm"><span
                             class="material-icons">file_download</span></a></td>
                     <td><a href="{{ model.process_model_pnml_file.url }}" class="btn btn-primary btn-sm"><span
                             class="material-icons">file_download</span></a></td>
-                    <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm"><span
+                    <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm" download><span
                             class="material-icons">file_download</span></a></td>
-                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm"><span
+                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm" download><span
                             class="material-icons">file_download</span></a></td>
                     <td>
                         <a href="{% url "process_handling:process_model_detail" model.process_model_id %}"

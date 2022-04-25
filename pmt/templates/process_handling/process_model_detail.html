@@ -3,65 +3,93 @@
 {% block title %}<title>PMT | Process Model Visualization</title>{% endblock %}
 {% block content %}
     <div class="container-fluid">
-        {# Details start #}
-        <section id="details ">
-            <div class="row mb-5">
-                {# Event Log Name #}
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Process Model Name
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_name }}</div>
+        <div class="row mb-5">
+            {# Event Log Name #}
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Process Model Name
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Process Model Owner
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_owner }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {# Event Log Owner #}
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Event Log Name
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_log_name }}</div>
-                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_name }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        {# Details end #}
-
-        <section id="graph">
-            {# BPMN graph start #}
-            <div id="canvas"></div>
-            {# BPMN graph end #}
-        </section>
-
-
-        {# BPMN graph end #}
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Process Model Owner
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_owner }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {# Event Log Owner #}
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Event Log Name
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ process_model.process_model_log_name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Algorithm
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">Inductive Miner</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-12">
+                <h2>BPMN Graph</h2>
+                <img class="img-fluid" src="{{ process_model.process_model_bpmn_png.url }}" alt="bpmn_image">
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-12">
+                <h2>PNML Graph</h2>
+                <img class="img-fluid" src="{{ process_model.process_model_pnml_png.url }}" alt="pnml_image"
+                     >
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-12">
+                <h2>PNML Frequency Graph</h2>
+                <img class="img-fluid" src="{{ process_model.process_model_pnml_frequency_png.url }}"
+                     alt="pnml_frequency_image">
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-12">
+                <h2>PNML Performance Graph</h2>
+                <img class="img-fluid" src="{{ process_model.process_model_pnml_performance_png.url }}"
+                     alt="pnml_performance_image">
+            </div>
+        </div>
     </div>
 
 {% endblock %}

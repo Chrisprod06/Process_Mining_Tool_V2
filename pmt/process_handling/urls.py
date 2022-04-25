@@ -64,9 +64,14 @@ urlpatterns = [
     ),
     # Simulation urls
     path(
-        "playout_simulation",
+        "playout_simulation/<str:pk>/<str:type_playout>/<str:num_traces>",
         views.playout_simulation,
         name="playout_simulation"
+    ),
+    path(
+        "playout_simulation_select",
+        views.playout_simulation_select,
+        name="playout_simulation_select"
     ),
     path(
         "monte_carlo_simulation_select",

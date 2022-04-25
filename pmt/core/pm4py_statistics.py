@@ -6,6 +6,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.variants import variants_filter
+from pm4py.visualization.graphs import visualizer as graphs_visualizer
 
 from pm4py.visualization.sna import visualizer as sna_visualizer
 from pm4py.util import constants
@@ -37,8 +38,8 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_handover_work = sna_visualizer.apply(
         handover_work_values, variant=sna_visualizer.Variants.PYVIS,
     )
-    # sna_visualizer.view(gviz_handover_work,
-    #                    variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(gviz_handover_work,
+                        variant=sna_visualizer.Variants.PYVIS)
 
     # Calculate subcontracting
     subcontracting_values = sna.apply(
@@ -47,7 +48,7 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_subcontracting = sna_visualizer.apply(
         subcontracting_values, variant=sna_visualizer.Variants.PYVIS
     )
-    # sna_visualizer.view(gviz_subcontracting, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(gviz_subcontracting, variant=sna_visualizer.Variants.PYVIS)
 
     # Calculate working together
     working_together_values = sna.apply(
@@ -56,7 +57,7 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_working_together = sna_visualizer.apply(
         working_together_values, variant=sna_visualizer.Variants.PYVIS
     )
-    # sna_visualizer.view(gviz_working_together, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(gviz_working_together, variant=sna_visualizer.Variants.PYVIS)
 
     # Calculate similar activities
     similar_activities_values = sna.apply(
@@ -65,8 +66,8 @@ def calculate_social_network_analysis(event_log_id) -> dict:
     gviz_similar_activities_values = sna_visualizer.apply(
         similar_activities_values, variant=sna_visualizer.Variants.PYVIS
     )
-    # sna_visualizer.view(
-    #    gviz_similar_activities_values, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(
+        gviz_similar_activities_values, variant=sna_visualizer.Variants.PYVIS)
 
     # Discover roles
     roles = roles_discovery.apply(event_log)
@@ -123,9 +124,6 @@ def calculate_statistics(event_log_id) -> dict:
     for case, activities in rework_cases.items():
         for activity, count in activities.items():
             rework_cases_counter = rework_cases_counter + count
-
-    print(rework_activities)
-    print(rework_cases)
     # Calculate case duration
     # Min
     min_case_duration = min(all_cases_duration)
@@ -140,10 +138,6 @@ def calculate_statistics(event_log_id) -> dict:
     max_case_duration = max(all_cases_duration)
     max_case_duration = round(max_case_duration / 3600, 1)
 
-    # Calculate Log timeframe
-    # Start
-    # End
-
     # Case duration distribution
     x, y = case_statistics.get_kde_caseduration(event_log, parameters={
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: "time:timestamp"})
@@ -151,6 +145,9 @@ def calculate_statistics(event_log_id) -> dict:
         "x": x,
         "y": y
     }
+    case_duration_gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.CASES)
+    graphs_visualizer.save(case_duration_gviz,
+                           "media/statistics/graphs/" + selected_event_log.event_log_name + "_case_duration_graph.png")
     # Get 2 lists of coordinates
     x = case_duration_graph_data["x"]
     y = case_duration_graph_data["y"]
@@ -171,6 +168,9 @@ def calculate_statistics(event_log_id) -> dict:
         "x": x,
         "y": y
     }
+    events_time_gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.CASES)
+    graphs_visualizer.save(events_time_gviz,
+                           "media/statistics/graphs/" + selected_event_log.event_log_name + "_events_time_graph.png")
     # Get 2 lists of coordinates
     x = events_over_time_graph_data["x"]
     y = events_over_time_graph_data["y"]
