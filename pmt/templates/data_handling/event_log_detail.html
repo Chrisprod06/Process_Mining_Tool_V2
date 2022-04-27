@@ -16,14 +16,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <label class="font-weight-bolder" for="content">Event Log Content:</label>
-                <textarea class = "form-control" name="content" id="content" cols="" rows="25">
-                    {{ event_log_file_content }}
-                </textarea>
-
+                <pre>
+                    <code class="xml" name="content" id="content">
+                        {{ event_log_file_content }}
+                    </code>
+                </pre>
             </div>
         </div>
     </div>
-
-
 
 {% endblock %}

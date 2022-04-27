@@ -70,3 +70,15 @@ class SelectFiltersFormVariant(forms.Form):
 class SelectFiltersFormNumeric(forms.Form):
     selected_number = forms.CharField(label="number:")
     file_name = forms.CharField(label="file name:")
+
+
+class SelectFiltersFormCaseSize(forms.Form):
+    minimum_size = forms.CharField(label="minimum size:")
+    maximum_size = forms.CharField(label="maximum size:")
+    file_name = forms.CharField(label="file name:")
+
+
+class SelectFiltersFormRework(forms.Form):
+    reworked_activity = forms.CharField(label="rework activity:")
+    occur_count = forms.CharField(label="occurrences:")
+    file_name = forms.CharField(label="file name:")

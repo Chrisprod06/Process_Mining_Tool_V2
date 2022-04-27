@@ -14,11 +14,12 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.statistics.traces.generic.log import case_statistics
-
+import pm4py
 from .models import EventLog
 
 from .forms import EventLogForm, SelectFiltersFormDate, SelectFiltersFormDuration, SelectFiltersFormStartEnd, \
-    SelectFiltersFormNumeric, SelectFiltersFormAttributes, SelectFiltersFormVariant
+    SelectFiltersFormNumeric, SelectFiltersFormAttributes, SelectFiltersFormVariant, SelectFiltersFormCaseSize, \
+    SelectFiltersFormRework
 
 
 @login_required(login_url="/accounts/login")
@@ -102,6 +103,9 @@ def event_log_filter(request, pk):
     form_attributes = SelectFiltersFormAttributes()
     form_variant = SelectFiltersFormVariant()
     form_numeric = SelectFiltersFormNumeric()
+    form_case_size = SelectFiltersFormCaseSize()
+    form_rework = SelectFiltersFormRework()
+    submit_active = ""
     if request.method == "POST":
         event_log_path = event_log.event_log_file
         log = xes_importer.apply("media/" + str(event_log_path))
@@ -114,6 +118,7 @@ def event_log_filter(request, pk):
                 end = end.replace(tzinfo=None)
                 file_name = form_date.cleaned_data.get("file_name")
                 filtered_log = timestamp_filter.filter_traces_contained(log, start, end)
+                submit_active = "date"
         if "submitFilterDuration" in request.POST:
             form_duration = SelectFiltersFormDuration(request.POST)
             print("first if = success")
@@ -218,28 +223,31 @@ def event_log_filter(request, pk):
                 selected_variant = " " + selected_variant
                 li = list(selected_variant.split(","))
                 file_name = form_variant.cleaned_data.get("file_name")
-                variants = variants_filter.get_variants(log)
-                print(variants)
-                print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                #variants = variants_filter.get_variants(log)
                 variants_count = case_statistics.get_variant_statistics(log)
                 variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-                print(variants_count)
-                print("---------------------------------------------------------------------------------------")
-                for i in range(len(variants_count)):
-                    for j in variants_count[i]:
-                        print(j, variants_count[i][j])
-                    # print(variants_count[i])
-                print(li)
                 # list from input not workling
                 # filtered_log = variants_filter.apply(log,  [[li]], parameters={variants_filter.Parameters.POSITIVE: False})
                 filtered_log = variants_filter.apply(log, [li])
-                if variants_count:
-                    context["variants_count"] = variants_count
         if "submitFilterNumeric" in request.POST:
             form_numeric = SelectFiltersFormNumeric(request.POST)
             if form_numeric.is_valid():
                 selected_number = form_numeric.cleaned_data.get("selected_number")
                 file_name = form_variant.cleaned_data.get("file_name")
+        if "submitFiltersCaseSize" in request.POST:
+            form_case_size = SelectFiltersFormCaseSize(request.POST)
+            if form_case_size.is_valid():
+                minimum_size = int(form_case_size.cleaned_data.get("minimum_size"))
+                maximum_size = int(form_case_size.cleaned_data.get("maximum_size"))
+                file_name = form_case_size.cleaned_data.get("file_name")
+                filtered_log = pm4py.filter_case_size(log, minimum_size, maximum_size)
+        if "submitFiltersFormRework" in request.POST:
+            form_rework = SelectFiltersFormRework(request.POST)
+            if form_rework.is_valid():
+                reworked = form_rework.cleaned_data.get("reworked_activity")
+                occur_count = int(form_rework.cleaned_data.get("occur_count"))
+                file_name = form_rework.cleaned_data.get("file_name")
+                filtered_log = pm4py.filter_activities_rework(log, reworked, occur_count)
         xes_exporter.apply(filtered_log, "media/event_logs/" + file_name + ".xes")
         event_log_file = "event_logs/" + file_name + ".xes"
         new_filtered_event_log = EventLog()
@@ -248,5 +256,6 @@ def event_log_filter(request, pk):
         new_filtered_event_log.event_log_file = event_log_file
         new_filtered_event_log.save()
     context = {"event_log": event_log, "form_date": form_date, "form_duration": form_duration,
-               "form_start_end": form_start_end, "form_attributes": form_attributes, "form_variant": form_variant}
+               "form_start_end": form_start_end, "form_attributes": form_attributes, "form_variant": form_variant,
+               "form_case_size": form_case_size, "form_rework": form_rework, "submit_active": submit_active}
     return render(request, template, context)
