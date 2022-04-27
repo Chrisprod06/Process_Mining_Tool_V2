@@ -106,6 +106,7 @@ def event_log_filter(request, pk):
     form_case_size = SelectFiltersFormCaseSize()
     form_rework = SelectFiltersFormRework()
     submit_active = ""
+    variants_count = []
     if request.method == "POST":
         event_log_path = event_log.event_log_file
         log = xes_importer.apply("media/" + str(event_log_path))
@@ -217,13 +218,12 @@ def event_log_filter(request, pk):
                             attributes_filter.Parameters.POSITIVE: False})
         if "submitFilterVariants" in request.POST:
             form_variant = SelectFiltersFormVariant(request.POST)
-            context = {}
             if form_variant.is_valid():
                 selected_variant = form_variant.cleaned_data.get("selected_variant")
                 selected_variant = " " + selected_variant
                 li = list(selected_variant.split(","))
                 file_name = form_variant.cleaned_data.get("file_name")
-                #variants = variants_filter.get_variants(log)
+                # variants = variants_filter.get_variants(log)
                 variants_count = case_statistics.get_variant_statistics(log)
                 variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
                 # list from input not workling
@@ -257,5 +257,6 @@ def event_log_filter(request, pk):
         new_filtered_event_log.save()
     context = {"event_log": event_log, "form_date": form_date, "form_duration": form_duration,
                "form_start_end": form_start_end, "form_attributes": form_attributes, "form_variant": form_variant,
-               "form_case_size": form_case_size, "form_rework": form_rework, "submit_active": submit_active}
+               "form_case_size": form_case_size, "form_rework": form_rework, "submit_active": submit_active, "variants_count": variants_count}
+    print(variants_count)
     return render(request, template, context)
