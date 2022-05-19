@@ -8,42 +8,46 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Event Logs</h1>
-            <a href="{% url 'data_handling:event_log_create' %}" class="btn btn-primary"> Upload new Event Log</a>
+            <a href="{% url 'data_handling:event_log_create' %}" class="btn btn-primary"><span
+                            class="material-icons icon-span">add_circle_outline</span>  Upload new Event Log</a>
         </div>
 
 
         {# Table presenting event logs #}
-        <table id="table_event_logs" class="display">
+        <table id="table_event_logs" class="display text-center">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Owner ID</th>
                 <th>Name</th>
+                <th>Type</th>
                 <th>File</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             {% if event_logs %}
-            {% for log in event_logs %}
-                <tr>
-                    <td>{{ log.event_log_id }}</td>
-                    <td>{{ log.event_log_owner_id }}</td>
-                    <td>{{ log.event_log_name }}</td>
-                    <td><a href="{{ log.event_log_file.url }}" class="btn btn-primary btn-sm">Download</a>
-                    </td>
-                    <td>
-                        <a href="{% url "data_handling:event_log_detail" log.event_log_id %}"
-                           class="btn btn-info btn-sm">Detail</a>
-                        <a href="{% url "data_handling:event_log_update" log.event_log_id %}"
-                           class="btn btn-warning btn-sm">Update</a>
-                        <a href="#delete_event_log{{ log.pk }}" class="btn btn-danger btn-sm" data-toggle="modal">Delete</a>
-                        {% include "data_handling/event_log_confirm_delete.html" %}
-                        <a href="{% url "data_handling:event_log_filter" log.event_log_id %}"
-                           class="btn btn-success btn-sm">Filter</a>
-                    </td>
-                </tr>
-            {% endfor %}
+                {% for log in event_logs %}
+                    <tr>
+                        <td>{{ log.event_log_id }}</td>
+                        <td>{{ log.event_log_owner_id }}</td>
+                        <td>{{ log.event_log_name }}</td>
+                         <td>{{ log.event_log_type }}</td>
+                        <td><a href="{{ log.event_log_file.url }}" class="btn btn-primary btn-sm"><span class="material-icons">file_download</span></a>
+                        </td>
+                        <td>
+                            <a href="{% url "data_handling:event_log_detail" log.event_log_id %}"
+                               class="btn btn-info btn-sm"><span class="material-icons">visibility</span></a>
+                            <a href="{% url "data_handling:event_log_update" log.event_log_id %}"
+                               class="btn btn-warning btn-sm"><span class="material-icons">edit</span></a>
+                            <a href="#delete_event_log{{ log.pk }}" class="btn btn-danger btn-sm"
+                               data-toggle="modal"><span class="material-icons">delete</span></a>
+                            {% include "data_handling/event_log_confirm_delete.html" %}
+                            <a href="{% url "data_handling:event_log_filter" log.event_log_id %}"
+                               class="btn btn-success btn-sm"><span class="material-icons">filter_alt</span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
             {% endif %}
             </tbody>
         </table>

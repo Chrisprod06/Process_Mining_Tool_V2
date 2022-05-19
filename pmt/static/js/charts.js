@@ -1,14 +1,34 @@
-const CHART = document.getElementById("case_distribution_chart");
-console.log(CHART);
-const labels = Utils.months({count: 7});
-let lineChart = new Chart(CHART, {
-    type: "line",
-    labels: labels,
-    datasets: [{
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-    }]
+new Chart(document.getElementById("case_duration_graph"), {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'Scatter Dataset',
+            data: points_case_duration_graph,
+            backgroundColor: 'rgb(255,0, 0)',
+        }],
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Distribution of case duration'
+        }
+    }
+});
+
+new Chart(document.getElementById("events_over_time_graph"), {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'Scatter Dataset',
+            data: points_events_over_time_graph,
+            backgroundColor: 'rgb(0,255,0)',
+
+        }],
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Distribution of events over time'
+        }
+    }
 });

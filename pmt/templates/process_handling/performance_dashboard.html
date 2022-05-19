@@ -6,10 +6,26 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Performance Dashboard - Overview</h1>
+            <h1 class="h3 mb-0 text-gray-800">Performance Dashboard</h1>
         </div>
 
-        <div class="row">
+        <div class="row text-center">
+            {# Event Log Name #}
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Event Log
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ selected_event_log_name }}</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {# Count Cases #}
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
@@ -17,12 +33,9 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Cases
+                                    Total Cases
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_case }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -40,9 +53,6 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.count_variants }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,12 +64,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Activity Instances
+                                    <a href="#view_rework_activities" data-toggle="modal"><span
+                                            class="material-icons icon-span">visibility</span></a>
+                                    <span>Rework (Activities) </span>
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.rework_activities_counter }}</div>
                             </div>
                         </div>
                     </div>
@@ -72,12 +81,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Activities
+                                    <a href="#view_rework_cases" data-toggle="modal"><span
+                                            class="material-icons icon-span">visibility</span></a>
+                                    <span>Rework (cases) </span>
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statistics_results.rework_cases_counter }}</div>
                             </div>
                         </div>
                     </div>
@@ -90,61 +98,125 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Case Duration
+                                    Case Duration (h)
                                 </div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Min {{ statistics_results.min_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Median {{ statistics_results.median_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Average {{ statistics_results.average_case_duration }}</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">Max {{ statistics_results.max_case_duration }}</div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {# Log Timeframe #}
-            <div class="col-xl-2 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Log Timeframe
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">Start: 02/2/22</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">End: 08/2/22</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+
+                            <div>
+                                <dl class="row ">
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Min:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.min_case_duration }}
+                                    </dd>
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Med:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.median_case_duration }}
+                                    </dd>
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Avg:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.average_case_duration }}
+                                    </dd>
+                                    <dt class="col-sm-6 text-right h5 mb-0 font-weight-bold text-gray-800">
+                                        Max:
+                                    </dt>
+                                    <dd class="col-sm-6 text-left h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ statistics_results.max_case_duration }}
+                                    </dd>
+                                </dl>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Content Row -->
         <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <!-- Area Chart -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Case Variants</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-area">
-                            <canvas id="case_distribution_chart"></canvas>
-                        </div>
-                        <hr>
-                    </div>
+            <div class="col-lg-6">
+                <img class="img-fluid" src="{{ statistics_data.distribution_case_duration_graph.url }}" alt="">
+            </div>
+            <div class="col-lg-6">
+                <img class="img-fluid" src="{{ statistics_data.distribution_events_time.url }}" alt="">
+            </div>
+        </div>
+    </div>
+    <div id="view_rework_activities" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Rework (Activities)</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table id="table_rework_activities" class="display text-center">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Activity</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for activity,count in statistics_results.rework_activities.items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ activity }}</td>
+                                <td>{{ count }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
                 </div>
             </div>
-
         </div>
-        <!-- /.container-fluid -->
+    </div>
 
+    <div id="view_rework_cases" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {# Modal Header #}
+                <div class="modal-header">
+                    <h4 class="modal-title">Rework (Cases)</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table id="table_rework_cases" class="display text-center">
+                        <thead>
+                        <tr>
+                            <th>Case No.</th>
+                            <th>Activity</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for case,activities in statistics_results.rework_cases.items %}
+                            {% for activity,count in activities.items %}
+                                <tr>
+                                    <td>{{ forloop.parentloop.counter }}</td>
+                                    <td>{{ activity }}</td>
+                                    <td>{{ count }}</td>
+                                </tr>
+                            {% endfor %}
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {# Modal footer #}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- End of Main Content -->
 

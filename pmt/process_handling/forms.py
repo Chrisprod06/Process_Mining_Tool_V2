@@ -49,3 +49,19 @@ class SelectEventLogAndProcessModelForm(forms.Form):
     process_model = CustomProcessModelModelChoiceField(
         queryset=ProcessModel.objects.all()
     )
+
+
+class PlayoutDetailsForm(forms.Form):
+    """Form used for filling details required for play out"""
+
+    playouts = [
+        ("basic", "Basic"),
+        ("extensive", "Extensive")
+    ]
+
+    process_model = CustomProcessModelModelChoiceField(
+        queryset=ProcessModel.objects.all()
+    )
+    type_of_playout = forms.ChoiceField(choices=playouts)
+
+    number_of_traces = forms.IntegerField()

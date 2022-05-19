@@ -15,6 +15,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
@@ -23,7 +24,7 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
     <!-- required viewer styles -->
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@9.0.3/dist/assets/bpmn-js.css">
 
@@ -54,7 +55,7 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="{% url 'core:index' %}">
-                <i class="fas fa-home"></i>
+                <span class="material-icons">home</span>
                 <span>Home</span></a>
         </li>
 
@@ -69,7 +70,7 @@
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="{% url 'data_handling:event_log_list' %}">
-                <i class="fas fa-file-alt"></i>
+                <span class="material-icons">description</span>
                 <span>Event Logs</span></a>
         </li>
         <!-- Divider -->
@@ -83,7 +84,7 @@
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="{% url 'process_handling:process_model_list' %}">
-                <i class="fas fa-clipboard-check"></i>
+                <span class="material-icons">model_training</span>
                 <span>Process Models</span></a>
         </li>
 
@@ -91,7 +92,7 @@
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="{% url 'process_handling:conformance_check_select' %}">
-                <i class="fas fa-clipboard-check"></i>
+                <span class="material-icons">checklist</span>
                 <span>Conformance Checking</span></a>
         </li>
 
@@ -99,7 +100,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics"
                aria-expanded="true" aria-controls="collapseStatistics">
-                <i class="fab fa-cc-discover"></i>
+                <span class="material-icons">analytics</span>
                 <span>Statistics</span>
             </a>
             <div id="collapseStatistics" class="collapse" aria-labelledby="headingUtilities"
@@ -111,6 +112,24 @@
                         Network Analysis</a>
                 </div>
             </div>
+        </li>
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSimulation"
+               aria-expanded="true" aria-controls="collapseSimulation">
+                <span class="material-icons">calculate</span>
+                <span>Simulation</span>
+            </a>
+            <div id="collapseSimulation" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'process_handling:playout_simulation_select' %}">Play-out</a>
+                    <a class="collapse-item" href="{% url 'process_handling:monte_carlo_simulation_select' %}">Monte
+                        Carlo</a>
+                </div>
+
+            </div>
+
         </li>
 
         <!-- Divider -->
@@ -159,26 +178,18 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }} {{ user.last_name }}</span>
                             {% endif %}
                             <img class="img-profile rounded-circle"
-                                 src="{% static 'img/undraw_profile.svg' %}">
+                                 src="{% static 'img/profile.jpg' %}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
+                            <a class="dropdown-item" href=" {% url "core:change_password" user.pk %}">
+                                <span class="material-icons small">vpn_key</span>
+                                Change Password
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <span class="material-icons small">logout</span>
                                 Logout
                             </a>
                         </div>
@@ -198,7 +209,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Christophoros Prodromou | Stefanos Avraam</span>
+                    <span>&copy; Christophoros Prodromou & Stefanos Avraam 2022. All Rights Reserved.</span>
                 </div>
             </div>
         </footer>
@@ -265,7 +276,6 @@
 <!-- syntax highlight script-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
-
 
 </body>
 

@@ -24,6 +24,7 @@ class SelectEventLogForm(forms.Form):
 
     event_log = CustomEventLogModelChoiceField(queryset=EventLog.objects.all())
 
+
 class SelectFiltersFormDate(forms.Form):
     """Form to select filters"""
 
