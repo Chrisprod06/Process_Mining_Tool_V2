@@ -32,6 +32,8 @@ class SelectFiltersFormDate(forms.Form):
 
     start_time = forms.DateTimeField(label="starting time: ", required=False)
     end_time = forms.DateTimeField(label="ending time: ", required=False)
+    contained_box = forms.BooleanField(label="contained", required=False)
+    intersecting_box = forms.BooleanField(label="intersecting", required=False)
     file_name = forms.CharField(label="file name")
 
 
