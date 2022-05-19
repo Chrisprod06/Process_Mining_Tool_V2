@@ -5,6 +5,7 @@
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h2 class="h3 mb-0 text-gray-800">Select a Filter : </h2>
+            <p>{{ submit_active }}</p>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -29,55 +30,222 @@
                         <a class="nav-link" id="variant-tab" data-toggle="tab" href="#variant" role="tab"
                            aria-controls="variant" aria-selected="false">Case variant</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="case-size-tab" data-toggle="tab" href="#case_size" role="tab"
+                           aria-controls="case_size" aria-selected="false">Case Size</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="numeric-tab" data-toggle="tab" href="#numeric" role="tab"
+                           aria-controls="numeric" aria-selected="false">Numeric</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="rework-tab" data-toggle="tab" href="#rework" role="tab"
+                           aria-controls="rework" aria-selected="false">Rework</a>
+                    </li>
                 </ul>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-lg-4">
+            <div class="col-lg-12">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="time" role="tabpanel" aria-labelledby="time-tab">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            {{ form_date|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDate"
-                                   id="submitFilterDate">
-                        </form>
+                        <div class="col-lg-3">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{ form_date|crispy }}
+                                <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDate"
+                                       id="submitFilterDate">
+                            </form>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="date" role="tabpanel" aria-labelledby="date-tab">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            {{ form_duration|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDuration"
-                                   id="submitFilterDuration">
-                        </form>
+                        <div class="col-lg-3">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{ form_duration|crispy }}
+                                <input type="submit" class="btn btn-success" value="Submit" name="submitFilterDuration"
+                                       id="submitFilterDuration">
+                            </form>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="startEnd" role="tabpanel" aria-labelledby="startEnd-tab">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            {{ form_start_end|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterStartEnd"
-                                   id="submitFilterStartEnd">
-                        </form>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    {{ form_start_end|crispy }}
+                                    <input type="submit" class="btn btn-success" value="Submit"
+                                           name="submitFilterStartEnd"
+                                           id="submitFilterStartEnd">
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="attribute" role="tabpanel"
                          aria-labelledby="attribute-tab">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            {{ form_attributes|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterAttributes"
-                                   id="submitFilterAttributes">
-                        </form>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    {{ form_attributes|crispy }}
+                                    <input type="submit" class="btn btn-success" value="Submit"
+                                           name="submitFilterAttributes"
+                                           id="submitFilterAttributes">
+                                </form>
+                            </div>
+                            {% if activities_resources %}
+                                {% for activity, value in activities_resources.items %}
+                                    <div class="row">
+                                        <div class="col-xl-6 col-md-6 mb-4">
+                                            <div class="card border-left-primary shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                Activity
+                                                            </div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ activity }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-md-6 mb-4">
+                                            <div class="card border-left-primary shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                Occurences
+                                                            </div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ value }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="variant" role="tabpanel" aria-labelledby="variant-tab">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            {{ form_variant|crispy }}
-                            <input type="submit" class="btn btn-success" value="Submit" name="submitFilterEventLog"
-                                   id="submitFilterEventLog">
-                        </form>
+                        <div class="row">
+                            {% if variants_count %}
+                                <table id="table_variants" class="display">
+                                    <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Variant</th>
+                                        <th>Count</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for variant in variants_count %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ variant.variant }}</td>
+                                            <td>{{ variant.count }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="col-lg-3">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        {{ form_variant|crispy }}
+                                        <input type="submit" class="btn btn-success" value="Submit"
+                                               name="submitFilterVariants"
+                                               id="submitFilterVariants">
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="case_size" role="tabpanel"
+                         aria-labelledby="case-size-tab">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    {{ form_case_size|crispy }}
+                                    <input type="submit" class="btn btn-success" value="Submit"
+                                           name="submitFiltersCaseSize"
+                                           id="submitFiltersCaseSize">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="numeric" role="tabpanel"
+                         aria-labelledby="numeric-tab">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    {{ form_numeric|crispy }}
+                                    <input type="submit" class="btn btn-success" value="Submit"
+                                           name="submitFiltersNumeric"
+                                           id="submitFiltersNumeric">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="rework" role="tabpanel"
+                         aria-labelledby="rework-tab">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    {{ form_rework|crispy }}
+                                    <input type="submit" class="btn btn-success" value="Submit"
+                                           name="submitFiltersFormRework"
+                                           id="submitFiltersFormRework">
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- active script -->
+    <script>
+        let element_time = document.getElementById("time-tab");
+        let element_date = document.getElementById("date-tab");
+        let element_startend = document.getElementById("startEnd-tab");
+        let element_attribute = document.getElementById("attribute-tab");
+        let element_variant = document.getElementById("variant-tab");
+        let element_casesize = document.getElementById("case-size-tab");
+        let element_numeric = document.getElementById("numeric-tab");
+        let element_rework = document.getElementById("rework-tab");
+        let submit_var = {{submit_active}};
+        console.log(submit_var);
+        if (submit_var === "date") {
+            element_time.classList.add("active");
+        }
+        if (submit_var === "duration") {
+            element_date.classList.add("active");
+        }
+        if (submit_var === "start_end") {
+            element_startend.classList.add("active");
+        }
+        if (submit_var === "attributes") {
+            element_attribute.classList.add("active");
+        }
+        if (submit_var === "variants") {
+            element_variant.classList.add("active");
+        }
+        if (submit_var === "case_size") {
+            element_casesize.classList.add("active");
+        }
+        if (submit_var === "numeric") {
+            element_numeric.classList.add("active");
+        }
+        if (submit_var === "rework") {
+            element_rework.classList.add("active");
+        } else {
+            element_time.classList.add("active");
+        }
+    </script>
 {% endblock %}
