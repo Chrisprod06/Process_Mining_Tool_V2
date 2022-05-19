@@ -129,11 +129,6 @@ def event_log_filter(request, pk):
                 submit_active = "date"
         if "submitFilterDuration" in request.POST:
             form_duration = SelectFiltersFormDuration(request.POST)
-            if form_duration.is_valid():
-                filtered_log = timestamp_filter.filter_traces_contained(log, start, end)
-                submit_active = "date"
-        if "submitFilterDuration" in request.POST:
-            form_duration = SelectFiltersFormDuration(request.POST)
             print("first if = success")
             if form_duration.is_valid():
                 print("form is valid")
@@ -180,19 +175,7 @@ def event_log_filter(request, pk):
                 elif end_checkbox == True:
                     filtered_log = end_activities_filter.apply(log, [activity])
                     log_start_end = end_activities_filter.get_end_activities(filtered_log)
-                submit_active = "start_end"
-                        print(log_start)
-                        print(activity)
-                        # xes_exporter.apply(filtered_log, "media/" + file_name + ".xes")
-                    else:
-                        # log_af_sa
-                        filtered_log = start_activities_filter.apply_auto_filter(log, parameters={
-                            start_activities_filter.Parameters.DECREASING_FACTOR: 0.5})
-                        # xes_exporter.apply(log_af_sa, "media" + file_name + ".xes")
-                elif end_checkbox == True:
-                    end_activities = end_activities_filter.get_end_activities(log)
-                    filtered_log = end_activities_filter.apply(log, [activity])
-                    print(end_activities)
+                    submit_active = "start_end"
         if "submitFilterAttributes" in request.POST:
             form_attributes = SelectFiltersFormAttributes(request.POST)
             if form_attributes.is_valid():
@@ -204,8 +187,6 @@ def event_log_filter(request, pk):
                 activity_resource_box = form_attributes.cleaned_data.get("activity_resource")
                 containing_box = form_attributes.cleaned_data.get("activity_containing")
                 not_containing_box = form_attributes.cleaned_data.get("activity_not_containing")
-                activities = attributes_filter.get_attribute_values(log, "concept:name")
-                resources = attributes_filter.get_attribute_values(log, "org:resource")
                 if containing_box == True:
                     # tracefilter_log_pos
                     if activity_name_box == True:
@@ -213,17 +194,11 @@ def event_log_filter(request, pk):
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
                             attributes_filter.Parameters.POSITIVE: True})
                         activities_resources = attributes_filter.get_attribute_values(filtered_log, "concept:name")
-                        print(activities)
-                        print(resources)
-                        print(li)
                     if activity_resource_box == True:
                         filtered_log = attributes_filter.apply(log, li, parameters={
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
                             attributes_filter.Parameters.POSITIVE: True})
                         activities_resources = attributes_filter.get_attribute_values(filtered_log, "org:resource")
-                        print(activities)
-                        print(resources)
-                        print(li)
                 elif not_containing_box == True:
                     # tracefilter_log_neg
                     if activity_name_box == True:
@@ -231,9 +206,6 @@ def event_log_filter(request, pk):
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
                             attributes_filter.Parameters.POSITIVE: False})
                         activities_resources = attributes_filter.get_attribute_values(filtered_log, "concept:name")
-                        print(activities)
-                        print(resources)
-                        print(li)
                     if activity_resource_box == True:
                         # tracefilter_log_neg
                         filtered_log = attributes_filter.apply(log, li, parameters={
