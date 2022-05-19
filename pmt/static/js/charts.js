@@ -4,7 +4,7 @@ new Chart(document.getElementById("case_duration_graph"), {
         datasets: [{
             label: 'Scatter Dataset',
             data: points_case_duration_graph,
-            backgroundColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgb(255,0, 0)',
         }],
     },
     options: {
@@ -21,7 +21,7 @@ new Chart(document.getElementById("events_over_time_graph"), {
         datasets: [{
             label: 'Scatter Dataset',
             data: points_events_over_time_graph,
-            backgroundColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgb(0,255,0)',
 
         }],
     },

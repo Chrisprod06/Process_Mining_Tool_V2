@@ -62,11 +62,6 @@ def login(request):
     return render(request, template)
 
 
-def forgot_password(request):
-    template = "accounts/forgot_password.html"
-    return render(request, template)
-
-
 def logout(request):
     """Function for logging out the user"""
     auth.logout(request)

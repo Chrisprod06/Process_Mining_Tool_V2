@@ -7,4 +7,5 @@ urlpatterns = [
     path("index", views.index, name="index"),
     path("data_handling/", include("data_handling.urls")),
     path("process_handling/", include("process_handling.urls")),
+    path("change_password/<str:pk>", views.change_password, name="change_password")
 ]
