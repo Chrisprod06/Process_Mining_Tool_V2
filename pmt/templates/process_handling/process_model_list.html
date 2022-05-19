@@ -9,12 +9,6 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Process Models</h1>
             <div class="row">
-                <div>
-                    <a href="{% url 'process_handling:process_model_create' %}" class="btn btn-primary"><span
-                            class="material-icons icon-span">add_circle_outline</span> Upload new
-                        Process
-                        Model</a>
-                </div>
                 <div class=ml-3>
                     <a href="{% url 'process_handling:process_model_discover' %}" class="btn btn-primary">
                         <span
@@ -58,8 +52,6 @@
                     <td>
                         <a href="{% url "process_handling:process_model_detail" model.process_model_id %}"
                            class="btn btn-info btn-sm"><span class="material-icons">visibility</span></a>
-                        <a href="{% url "process_handling:process_model_update" model.process_model_id %}"
-                           class="btn btn-warning btn-sm"><span class="material-icons">edit</span></a>
                         <a href="#delete_process_model{{ model.pk }}" class="btn btn-danger btn-sm" data-toggle="modal"><span
                                 class="material-icons">delete</span></a>
                         {% include "process_handling/process_model_confirm_delete.html" %}

@@ -114,3 +114,8 @@ def perform_alignment(event_log_name, process_model_id):
     aligned_traces = alignments.apply_log(event_log_file, net, initial_marking, final_marking)
 
     return aligned_traces
+
+
+def perform_footprint_comparison(event_log_name, process_model_id):
+    """Function to calculate footprints and compare them"""
+    

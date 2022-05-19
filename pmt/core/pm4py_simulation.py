@@ -63,7 +63,6 @@ def perform_monte_carlo_simulation(event_log_pk) -> dict:
         montecarlo_simulation.Variants.PETRI_SEMAPH_FIFO.value.Parameters.TOKEN_REPLAY_VARIANT] = Variants.BACKWARDS
     parameters[montecarlo_simulation.Variants.PETRI_SEMAPH_FIFO.value.Parameters.PARAM_CASE_ARRIVAL_RATIO] = 10800
     simulated_log, res = montecarlo_simulation.apply(event_log_file, net, im, fm, parameters=parameters)
-
     simulated_log_name = event_log.event_log_name + "_simulated_monte_carlo_event_log"
     xes_exporter.apply(simulated_log, "media/event_logs/" + simulated_log_name + ".xes")
 
