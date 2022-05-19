@@ -31,6 +31,9 @@
     {# Datatables style #}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
 
+    <!-- syntax highlight -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+
 </head>
 
 <body id="page-top">
@@ -269,6 +272,10 @@
 
 <script src="{% static 'js/datatables.js' %}"></script>
 <script src="{% static 'js/charts.js' %}"></script>
+
+<!-- syntax highlight script-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 
 </body>
 
