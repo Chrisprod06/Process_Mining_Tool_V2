@@ -164,7 +164,6 @@ def event_log_filter(request, pk):
                 end_checkbox = form_start_end.cleaned_data.get("end_checkbox")
                 frequent_checkbox = form_start_end.cleaned_data.get("frequent_checkbox")
                 file_name = form_start_end.cleaned_data.get("file_name")
-                activity = " " + activity
                 if start_checkbox == True:
                     if frequent_checkbox == False:
                         filtered_log = start_activities_filter.apply(log, [activity])
@@ -180,7 +179,6 @@ def event_log_filter(request, pk):
             form_attributes = SelectFiltersFormAttributes(request.POST)
             if form_attributes.is_valid():
                 selected_attribute = form_attributes.cleaned_data.get("selected_attribute")
-                selected_attribute = " " + selected_attribute
                 li = list(selected_attribute.split(","))
                 file_name = form_attributes.cleaned_data.get("file_name")
                 activity_name_box = form_attributes.cleaned_data.get("activity_name")

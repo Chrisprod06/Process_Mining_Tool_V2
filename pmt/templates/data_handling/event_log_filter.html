@@ -211,41 +211,6 @@
     </div>
     <!-- active script -->
     <script>
-        let element_time = document.getElementById("time-tab");
-        let element_date = document.getElementById("date-tab");
-        let element_startend = document.getElementById("startEnd-tab");
-        let element_attribute = document.getElementById("attribute-tab");
-        let element_variant = document.getElementById("variant-tab");
-        let element_casesize = document.getElementById("case-size-tab");
-        let element_numeric = document.getElementById("numeric-tab");
-        let element_rework = document.getElementById("rework-tab");
-        let submit_var = {{submit_active}};
-        console.log(submit_var);
-        if (submit_var === "date") {
-            element_time.classList.add("active");
-        }
-        if (submit_var === "duration") {
-            element_date.classList.add("active");
-        }
-        if (submit_var === "start_end") {
-            element_startend.classList.add("active");
-        }
-        if (submit_var === "attributes") {
-            element_attribute.classList.add("active");
-        }
-        if (submit_var === "variants") {
-            element_variant.classList.add("active");
-        }
-        if (submit_var === "case_size") {
-            element_casesize.classList.add("active");
-        }
-        if (submit_var === "numeric") {
-            element_numeric.classList.add("active");
-        }
-        if (submit_var === "rework") {
-            element_rework.classList.add("active");
-        } else {
-            element_time.classList.add("active");
-        }
+
     </script>
 {% endblock %}

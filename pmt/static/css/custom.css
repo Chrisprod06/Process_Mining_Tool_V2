@@ -23,3 +23,11 @@ html, body, #canvas {
 .icon-span{
     vertical-align: middle;
 }
+
+.pre_text {
+    height: auto;
+    max-height: 400px;
+    overflow: auto;
+    /*overflow-y: none;*/
+    background-color: #eeeeee;
+}
