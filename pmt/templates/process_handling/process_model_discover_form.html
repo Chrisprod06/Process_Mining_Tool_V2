@@ -1,18 +1,18 @@
 {% extends "core/base.html" %}
 {% load crispy_forms_tags %}
-{% block title %}<title>PMT | Social Network Analysis</title>{% endblock %}
+{% block title %}<title>PMT | Discover New Process Model</title>{% endblock %}
 {% block content %}
     <div class="container-fluid">
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-center mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Select Event Log</h1>
+            <h1 class="h3 mb-0 text-gray-800">Discover New Process Model</h1>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-3">
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ select_event_log_form|crispy }}
+                    {{ form|crispy }}
                     <input type="submit" class="btn btn-success" value="Submit" name="submit"
                            id="submit">
                 </form>

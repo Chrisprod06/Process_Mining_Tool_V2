@@ -20,17 +20,17 @@
 
 
         {# Table presenting process models #}
-        <table id="table_process_models" class="display">
+        <table id="table_process_models" class="display text-center">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Owner</th>
                 <th>Name</th>
                 <th>Event Log</th>
-                <th>Process Model BPMN File</th>
-                <th>Process Model PNML File</th>
-                <th>Process Model BPMN PNG</th>
-                <th>Process Model PNML PNG</th>
+                <th>BPMN File</th>
+                <th>PNML File</th>
+                <th>BPMN PNG</th>
+                <th>PNML PNG</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -41,13 +41,13 @@
                     <td>{{ model.process_model_owner }}</td>
                     <td>{{ model.process_model_name }}</td>
                     <td>{{ model.process_model_log_name }}</td>
-                    <td><a href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm"><span
+                    <td><a  href="{{ model.process_model_bpmn_file.url }}" class="btn btn-primary btn-sm"><span
                             class="material-icons">file_download</span></a></td>
                     <td><a href="{{ model.process_model_pnml_file.url }}" class="btn btn-primary btn-sm"><span
                             class="material-icons">file_download</span></a></td>
-                    <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm"><span
+                    <td><a href="{{ model.process_model_bpmn_png.url }}" class="btn btn-primary btn-sm" download><span
                             class="material-icons">file_download</span></a></td>
-                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm"><span
+                    <td><a href="{{ model.process_model_pnml_png.url }}" class="btn btn-primary btn-sm" download><span
                             class="material-icons">file_download</span></a></td>
                     <td>
                         <a href="{% url "process_handling:process_model_detail" model.process_model_id %}"

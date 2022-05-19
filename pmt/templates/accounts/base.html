@@ -15,11 +15,12 @@
             rel="stylesheet">
     {# Custom styles for this template #}
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
 </head>
 <body class="bg-gradient-primary">
 {% include "includes/messages.html" %}
 {% block body %}
-<h1>This will change</h1>
+    <h1>This will change</h1>
 {% endblock %}
 {# Bootstrap core JavaScript #}
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
