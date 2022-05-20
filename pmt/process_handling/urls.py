@@ -79,7 +79,7 @@ urlpatterns = [
         name="monte_carlo_simulation_select"
     ),
     path(
-        "monte_carlo_simulation/<str:event_log_pk>",
+        "monte_carlo_simulation/<str:event_log_pk>/<str:case_arrival_ratio>",
         views.monte_carlo_simulation,
         name="monte_carlo_simulation"
     )

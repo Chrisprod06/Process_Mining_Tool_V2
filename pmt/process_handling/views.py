@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from .forms import ProcessModelForm, DiscoverProcessModelForm, SelectEventLogAndProcessModelForm, PlayoutDetailsForm
+from .forms import ProcessModelForm, DiscoverProcessModelForm, SelectEventLogAndProcessModelForm, PlayoutDetailsForm, \
+    MonteCarloDetailsForm
 from .models import ProcessModel, StatisticsData
 from core import pm4py_discovery, pm4py_statistics, pm4py_conformance, pm4py_simulation
 from data_handling.forms import SelectEventLogForm
@@ -26,8 +27,13 @@ def process_model_list(request):
 def process_model_detail(request, pk):
     """View to handle providing details for a single process model"""
     process_model = ProcessModel.objects.get(pk=pk)
+    event_log = process_model.process_model_log_name
+    file_path = "media/" + str(event_log.event_log_file)
+    file = open(file_path, "r")
+    event_log_file_content = file.read()
     template = "process_handling/process_model_detail.html"
-    context = {"process_model": process_model}
+    context = {"process_model": process_model,
+               "event_log_file_content": event_log_file_content}
     return render(request, template, context)
 
 
@@ -317,18 +323,20 @@ def playout_simulation_select(request):
 def monte_carlo_simulation_select(request):
     """View to handle preparation of simulation"""
     template = "process_handling/monte_carlo_simulation_form.html"
-    select_event_log_form = SelectEventLogForm()
+    select_event_log_form = MonteCarloDetailsForm()
     if request.method == "POST":
-        select_event_log_form = SelectEventLogForm(request.POST)
+        select_event_log_form = MonteCarloDetailsForm(request.POST)
         if select_event_log_form.is_valid():
             event_log_name = select_event_log_form.cleaned_data["event_log"]
+            case_arrival_ratio = select_event_log_form.cleaned_data["case_arrival_ratio"]
             event_log = EventLog.objects.get(event_log_name=event_log_name)
             selected_event_log_id = event_log.event_log_id
 
             return redirect(
                 reverse_lazy(
                     "process_handling:monte_carlo_simulation",
-                    kwargs={"event_log_pk": selected_event_log_id}
+                    kwargs={"event_log_pk": selected_event_log_id,
+                            "case_arrival_ratio": case_arrival_ratio}
                 )
             )
     context = {
@@ -338,12 +346,11 @@ def monte_carlo_simulation_select(request):
 
 
 @login_required(login_url="/accounts/login")
-def monte_carlo_simulation(request, event_log_pk):
+def monte_carlo_simulation(request, event_log_pk, case_arrival_ratio):
     """View to handle monte carlo simulation"""
     template = "process_handling/monte_carlo_simulation.html"
     selected_event_log = EventLog.objects.get(pk=event_log_pk)
-
-    simulation_results = pm4py_simulation.perform_monte_carlo_simulation(event_log_pk)
+    simulation_results = pm4py_simulation.perform_monte_carlo_simulation(event_log_pk, case_arrival_ratio)
 
     simulated_event_log = EventLog()
     simulated_event_log.event_log_owner = selected_event_log.event_log_owner

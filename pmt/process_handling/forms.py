@@ -65,3 +65,8 @@ class PlayoutDetailsForm(forms.Form):
     type_of_playout = forms.ChoiceField(choices=playouts)
 
     number_of_traces = forms.IntegerField()
+
+class MonteCarloDetailsForm(forms.Form):
+    """Form used for filling details required for montecarlo"""
+    event_log = CustomEventLogModelChoiceField(queryset=EventLog.objects.all())
+    case_arrival_ratio = forms.IntegerField()

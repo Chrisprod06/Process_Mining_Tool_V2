@@ -63,29 +63,42 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="font-weight-bolder 900">Event Log Content</h4>
+                <div class="pre_text">
+                      <pre>
+                        <code class="xml" name="content" id="content">
+                            {{ event_log_file_content }}
+                        </code>
+                    </pre>
+                </div>
+
+            </div>
+        </div>
         <div class="row mt-5 mb-5">
             <div class="col-lg-12">
-                <h2>BPMN Graph</h2>
+                <h4 class="font-weight-bolder 900">BPMN Graph</h4>
                 <img class="img-fluid" src="{{ process_model.process_model_bpmn_png.url }}" alt="bpmn_image">
             </div>
         </div>
         <div class="row mt-5 mb-5">
             <div class="col-lg-12">
-                <h2>PNML Graph</h2>
+                <h4 class="font-weight-bolder 900">PNML Graph</h4>
                 <img class="img-fluid" src="{{ process_model.process_model_pnml_png.url }}" alt="pnml_image"
-                     >
+                >
             </div>
         </div>
         <div class="row mt-5 mb-5">
             <div class="col-lg-12">
-                <h2>PNML Frequency Graph</h2>
+                <h4 class="font-weight-bolder 900">PNML Frequency Graph</h4>
                 <img class="img-fluid" src="{{ process_model.process_model_pnml_frequency_png.url }}"
                      alt="pnml_frequency_image">
             </div>
         </div>
         <div class="row mt-5 mb-5">
             <div class="col-lg-12">
-                <h2>PNML Performance Graph</h2>
+                <h4 class="font-weight-bolder 900">PNML Performance Graph</h4>
                 <img class="img-fluid" src="{{ process_model.process_model_pnml_performance_png.url }}"
                      alt="pnml_performance_image">
             </div>
