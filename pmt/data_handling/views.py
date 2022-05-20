@@ -96,6 +96,11 @@ def event_log_delete(request, pk):
 def event_log_filter(request, pk):
     """View to handle providing details for a single event log"""
     event_log = EventLog.objects.get(pk=pk)
+    event_log_path = event_log.event_log_file
+    log = xes_importer.apply("media/" + str(event_log_path))
+    #for variants
+    variants_dict = case_statistics.get_variant_statistics(log)
+    variants_dict = sorted(variants_dict, key=lambda x: x['count'], reverse=True)
     template = "data_handling/event_log_filter.html"
     form_date = SelectFiltersFormDate()
     form_duration = SelectFiltersFormDuration()
@@ -110,8 +115,6 @@ def event_log_filter(request, pk):
     log_start_end = {}
     activities_resources=[]
     if request.method == "POST":
-        event_log_path = event_log.event_log_file
-        log = xes_importer.apply("media/" + str(event_log_path))
         if "submitFilterDate" in request.POST:
             form_date = SelectFiltersFormDate(request.POST)
             if form_date.is_valid():
@@ -215,17 +218,18 @@ def event_log_filter(request, pk):
             form_variant = SelectFiltersFormVariant(request.POST)
             context = {}
             if form_variant.is_valid():
+                choice=form_variant.cleaned_data.get("choice")
+                contain_var_box = form_variant.cleaned_data.get("contain_var_box")
                 selected_variant = form_variant.cleaned_data.get("selected_variant")
-                selected_variant = " " + selected_variant
-                li = list(selected_variant.split(","))
+                li = list(selected_variant.split(";"))
                 file_name = form_variant.cleaned_data.get("file_name")
-                # variants = variants_filter.get_variants(log)
-                #variants = variants_filter.get_variants(log)
-                variants_count = case_statistics.get_variant_statistics(log)
+                if choice == 'contain':
+                    filtered_log = variants_filter.apply(log, li)
+                else:
+                    filtered_log = variants_filter.apply(log, li,
+                                                      parameters={variants_filter.Parameters.POSITIVE: False})
+                variants_count = case_statistics.get_variant_statistics(filtered_log)
                 variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-                # list from input not workling
-                # filtered_log = variants_filter.apply(log,  [[li]], parameters={variants_filter.Parameters.POSITIVE: False})
-                filtered_log = variants_filter.apply(log, [li])
                 submit_active = "variants"
         if "submitFiltersNumeric" in request.POST:
             form_numeric = SelectFiltersFormNumeric(request.POST)
@@ -260,6 +264,6 @@ def event_log_filter(request, pk):
                "form_start_end": form_start_end, "form_attributes": form_attributes, "form_variant": form_variant,
                "form_case_size": form_case_size, "form_rework": form_rework, "submit_active": submit_active,
                "form_numeric": form_numeric, "variants_count": variants_count,
-               "activities_resources": activities_resources, "log_start_end": log_start_end}
+               "activities_resources": activities_resources, "log_start_end": log_start_end,"variants_dict": variants_dict}
     print(submit_active)
     return render(request, template, context)

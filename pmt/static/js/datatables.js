@@ -7,4 +7,5 @@
         $('#table_rework_activities').DataTable();
         $('#table_rework_cases').DataTable();
         $('#table_cases_ex_time').DataTable();
+        $('#table_attributes').DataTable();
     });

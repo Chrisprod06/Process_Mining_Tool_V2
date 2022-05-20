@@ -66,7 +66,9 @@ class SelectFiltersFormAttributes(forms.Form):
 
 
 class SelectFiltersFormVariant(forms.Form):
+    CHOICES=[('contain','containing'),('not_contain','not Containing')]
     selected_variant = forms.CharField()
+    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
     file_name = forms.CharField(label="file name:")
 
 
