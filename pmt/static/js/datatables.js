@@ -8,4 +8,7 @@
         $('#table_rework_cases').DataTable();
         $('#table_cases_ex_time').DataTable();
         $('#table_attributes').DataTable();
+        $('#table_start_end').DataTable();
+        $('#table_activity_attr').DataTable();
+        $('#table_resource_attr').DataTable();
     });

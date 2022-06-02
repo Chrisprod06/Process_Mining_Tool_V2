@@ -18,8 +18,7 @@ import pm4py
 from .models import EventLog
 
 from .forms import EventLogForm, SelectFiltersFormDate, SelectFiltersFormDuration, SelectFiltersFormStartEnd, \
-    SelectFiltersFormNumeric, SelectFiltersFormAttributes, SelectFiltersFormVariant, SelectFiltersFormCaseSize, \
-    SelectFiltersFormRework
+    SelectFiltersFormAttributes, SelectFiltersFormVariant, SelectFiltersFormCaseSize, SelectFiltersFormRework
 
 
 @login_required(login_url="/accounts/login")
@@ -78,6 +77,7 @@ def event_log_update(request, pk):
     context = {"form": update_event_log_form}
     return render(request, template, context)
 
+
 @login_required(login_url="/accounts/login")
 def event_log_delete(request, pk):
     """View to handle deletion of event logs"""
@@ -91,14 +91,18 @@ def event_log_delete(request, pk):
     return redirect(reverse_lazy("data_handling:event_log_list"))
 
 
-
 @login_required(login_url="/accounts/login")
 def event_log_filter(request, pk):
     """View to handle providing details for a single event log"""
     event_log = EventLog.objects.get(pk=pk)
     event_log_path = event_log.event_log_file
     log = xes_importer.apply("media/" + str(event_log_path))
-    #for variants
+    # for start end
+    log_start = start_activities_filter.get_start_activities(log)
+    # for attributes
+    activities_atrr = attributes_filter.get_attribute_values(log, "concept:name")
+    resources_atrr = attributes_filter.get_attribute_values(log, "org:resource")
+    # for variants
     variants_dict = case_statistics.get_variant_statistics(log)
     variants_dict = sorted(variants_dict, key=lambda x: x['count'], reverse=True)
     template = "data_handling/event_log_filter.html"
@@ -107,13 +111,12 @@ def event_log_filter(request, pk):
     form_start_end = SelectFiltersFormStartEnd()
     form_attributes = SelectFiltersFormAttributes()
     form_variant = SelectFiltersFormVariant()
-    form_numeric = SelectFiltersFormNumeric()
     form_case_size = SelectFiltersFormCaseSize()
     form_rework = SelectFiltersFormRework()
     submit_active = ""
     variants_count = []
     log_start_end = {}
-    activities_resources=[]
+    activities_resources = []
     if request.method == "POST":
         if "submitFilterDate" in request.POST:
             form_date = SelectFiltersFormDate(request.POST)
@@ -123,58 +126,51 @@ def event_log_filter(request, pk):
                 start = start.strftime("%Y-%m-%d %H:%M:%S")
                 end = end.strftime("%Y-%m-%d %H:%M:%S")
                 file_name = form_date.cleaned_data.get("file_name")
-                contained = form_date.cleaned_data.get("contained_box")
-                intersecting = form_date.cleaned_data.get("intersecting_box")
-                if contained == True:
+                choice = form_date.cleaned_data.get("choice")
+                if choice == 'containing':
                     filtered_log = timestamp_filter.filter_traces_contained(log, start, end)
-                if intersecting == True:
+                if choice == 'intersect':
                     filtered_log = timestamp_filter.filter_traces_intersecting(log, start, end)
                 submit_active = "date"
+                messages.success(request, "Event log created successfully!")
         if "submitFilterDuration" in request.POST:
             form_duration = SelectFiltersFormDuration(request.POST)
-            print("first if = success")
             if form_duration.is_valid():
-                print("form is valid")
-                days = form_duration.cleaned_data.get("days")
-                hours = form_duration.cleaned_data.get("hours")
-                minutes = form_duration.cleaned_data.get("minutes")
-                seconds = form_duration.cleaned_data.get("seconds")
+                choice = form_duration.cleaned_data.get("choice")
                 min = int(form_duration.cleaned_data.get("min_duration"))
                 max = int(form_duration.cleaned_data.get("max_duration"))
                 file_name = form_duration.cleaned_data.get("file_name")
                 min_duration = 0
                 max_duration = 0
-                if days == True:
+                if choice == 'days':
                     min_duration = 24 * 60 * 60 * min
                     max_duration = 24 * 60 * 60 * max
-                if hours == True:
+                if choice == 'hours':
                     min_duration = 60 * 60 * min
                     max_duration = 60 * 60 * max
-                if minutes == True:
+                if choice == 'minutes':
                     min_duration = 60 * min
                     max_duration = 60 * max
-                if seconds == True:
+                if choice == 'seconds':
                     min_duration = min
                     max_duration = max
                 filtered_log = case_filter.filter_case_performance(log, min_duration, max_duration)
                 submit_active = "duration"
-                print("inner if = success")
         if "submitFilterStartEnd" in request.POST:
             form_start_end = SelectFiltersFormStartEnd(request.POST)
             if form_start_end.is_valid():
                 activity = form_start_end.cleaned_data.get("activity")
-                start_checkbox = form_start_end.cleaned_data.get("start_checkbox")
-                end_checkbox = form_start_end.cleaned_data.get("end_checkbox")
-                frequent_checkbox = form_start_end.cleaned_data.get("frequent_checkbox")
+                choice = form_start_end.cleaned_data.get("choice")
+                frequent_checkbox = form_start_end.cleaned_data.get("frequent_box")
                 file_name = form_start_end.cleaned_data.get("file_name")
-                if start_checkbox == True:
+                if choice == 'start_act':
                     if frequent_checkbox == False:
                         filtered_log = start_activities_filter.apply(log, [activity])
                         log_start_end = start_activities_filter.get_start_activities(filtered_log)
                     else:
                         filtered_log = start_activities_filter.apply_auto_filter(log, parameters={
                             start_activities_filter.Parameters.DECREASING_FACTOR: 0.5})
-                elif end_checkbox == True:
+                elif choice == 'end_act':
                     filtered_log = end_activities_filter.apply(log, [activity])
                     log_start_end = end_activities_filter.get_end_activities(filtered_log)
                     submit_active = "start_end"
@@ -184,30 +180,28 @@ def event_log_filter(request, pk):
                 selected_attribute = form_attributes.cleaned_data.get("selected_attribute")
                 li = list(selected_attribute.split(","))
                 file_name = form_attributes.cleaned_data.get("file_name")
-                activity_name_box = form_attributes.cleaned_data.get("activity_name")
-                activity_resource_box = form_attributes.cleaned_data.get("activity_resource")
-                containing_box = form_attributes.cleaned_data.get("activity_containing")
-                not_containing_box = form_attributes.cleaned_data.get("activity_not_containing")
-                if containing_box == True:
+                choice_act = form_attributes.cleaned_data.get("choice_act")
+                choice_cont = form_attributes.cleaned_data.get("choice_cont")
+                if choice_cont == 'contain_act':
                     # tracefilter_log_pos
-                    if activity_name_box == True:
+                    if choice_act == 'activity':
                         filtered_log = attributes_filter.apply(log, li, parameters={
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
                             attributes_filter.Parameters.POSITIVE: True})
                         activities_resources = attributes_filter.get_attribute_values(filtered_log, "concept:name")
-                    if activity_resource_box == True:
+                    if choice_act == 'resource':
                         filtered_log = attributes_filter.apply(log, li, parameters={
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
                             attributes_filter.Parameters.POSITIVE: True})
                         activities_resources = attributes_filter.get_attribute_values(filtered_log, "org:resource")
-                elif not_containing_box == True:
+                elif choice_cont == 'not_contain_act':
                     # tracefilter_log_neg
-                    if activity_name_box == True:
+                    if choice_act == 'activity':
                         filtered_log = attributes_filter.apply(log, li, parameters={
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
                             attributes_filter.Parameters.POSITIVE: False})
                         activities_resources = attributes_filter.get_attribute_values(filtered_log, "concept:name")
-                    if activity_resource_box == True:
+                    if choice_act == 'resource':
                         # tracefilter_log_neg
                         filtered_log = attributes_filter.apply(log, li, parameters={
                             attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
@@ -218,7 +212,7 @@ def event_log_filter(request, pk):
             form_variant = SelectFiltersFormVariant(request.POST)
             context = {}
             if form_variant.is_valid():
-                choice=form_variant.cleaned_data.get("choice")
+                choice = form_variant.cleaned_data.get("choice")
                 contain_var_box = form_variant.cleaned_data.get("contain_var_box")
                 selected_variant = form_variant.cleaned_data.get("selected_variant")
                 li = list(selected_variant.split(";"))
@@ -227,16 +221,10 @@ def event_log_filter(request, pk):
                     filtered_log = variants_filter.apply(log, li)
                 else:
                     filtered_log = variants_filter.apply(log, li,
-                                                      parameters={variants_filter.Parameters.POSITIVE: False})
+                                                         parameters={variants_filter.Parameters.POSITIVE: False})
                 variants_count = case_statistics.get_variant_statistics(filtered_log)
                 variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
                 submit_active = "variants"
-        if "submitFiltersNumeric" in request.POST:
-            form_numeric = SelectFiltersFormNumeric(request.POST)
-            if form_numeric.is_valid():
-                selected_number = form_numeric.cleaned_data.get("selected_number")
-                file_name = form_variant.cleaned_data.get("file_name")
-                submit_active = "numeric"
         if "submitFiltersCaseSize" in request.POST:
             form_case_size = SelectFiltersFormCaseSize(request.POST)
             if form_case_size.is_valid():
@@ -263,7 +251,9 @@ def event_log_filter(request, pk):
     context = {"event_log": event_log, "form_date": form_date, "form_duration": form_duration,
                "form_start_end": form_start_end, "form_attributes": form_attributes, "form_variant": form_variant,
                "form_case_size": form_case_size, "form_rework": form_rework, "submit_active": submit_active,
-               "form_numeric": form_numeric, "variants_count": variants_count,
-               "activities_resources": activities_resources, "log_start_end": log_start_end,"variants_dict": variants_dict}
+               "variants_count": variants_count,
+               "activities_resources": activities_resources, "log_start_end": log_start_end,
+               "variants_dict": variants_dict, "log_start": log_start, "activities_atrr": activities_atrr,
+               "resources_atrr": resources_atrr}
     print(submit_active)
     return render(request, template, context)

@@ -36,10 +36,6 @@
                            aria-controls="case_size" aria-selected="false">Case Size</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="numeric-tab" data-toggle="tab" href="#numeric" role="tab"
-                           aria-controls="numeric" aria-selected="false">Numeric</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" id="rework-tab" data-toggle="tab" href="#rework" role="tab"
                            aria-controls="rework" aria-selected="false">Rework</a>
                     </li>
@@ -71,6 +67,28 @@
                     </div>
                     <div class="tab-pane fade" id="startEnd" role="tabpanel" aria-labelledby="startEnd-tab">
                         <div class="row">
+                            {% if log_start %}
+                                <div class="col-lg-9">
+                                    <table id="table_start_end" class="display">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Activity</th>
+                                            <th>Count</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for key, value in log_start.items %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ key }}</td>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
                             <div class="col-lg-3">
                                 <form action="" method="POST">
                                     {% csrf_token %}
@@ -106,6 +124,46 @@
                                     </table>
                                 </div>
                             {% else %}
+                                {% if activities_atrr %}
+                                    <div class="col-lg4">
+                                        <table id="table_activity_attr" class="display">
+                                            <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Activity</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for item in activities_atrr %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ item }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endif %}
+                                {% if resources_atrr %}
+                                    <div class="col-lg-4">
+                                        <table id="table_resource_attr" class="display">
+                                            <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Resource</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for item in resources_atrr %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ item }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endif %}
                                 <div class="col-lg-3">
                                     <form action="" method="POST">
                                         {% csrf_token %}
@@ -122,25 +180,25 @@
                         <div class="row">
                             {% if variants_count %}
                                 <div class="col-lg-9">
-                                <table id="table_variants" class="display">
-                                    <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Variant</th>
-                                        <th>Count</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for item in variants_count %}
+                                    <table id="table_variants" class="display">
+                                        <thead>
                                         <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            {% for key, value in item.items %}
-                                                <td>{{ value }}</td>
-                                            {% endfor %}
+                                            <th>No.</th>
+                                            <th>Variant</th>
+                                            <th>Count</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in variants_count %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                {% for key, value in item.items %}
+                                                    <td>{{ value }}</td>
+                                                {% endfor %}
                                             </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             {% else %}
                                 <div class="col-lg-8">
@@ -186,20 +244,6 @@
                                     <input type="submit" class="btn btn-success" value="Submit"
                                            name="submitFiltersCaseSize"
                                            id="submitFiltersCaseSize">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="numeric" role="tabpanel"
-                         aria-labelledby="numeric-tab">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <form action="" method="POST">
-                                    {% csrf_token %}
-                                    {{ form_numeric|crispy }}
-                                    <input type="submit" class="btn btn-success" value="Submit"
-                                           name="submitFiltersNumeric"
-                                           id="submitFiltersNumeric">
                                 </form>
                             </div>
                         </div>

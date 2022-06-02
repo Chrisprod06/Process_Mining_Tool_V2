@@ -33,48 +33,42 @@ class SelectFiltersFormDate(forms.Form):
 
     start_time = forms.DateTimeField(label="starting time: ", required=False)
     end_time = forms.DateTimeField(label="ending time: ", required=False)
-    contained_box = forms.BooleanField(label="contained", required=False)
-    intersecting_box = forms.BooleanField(label="intersecting", required=False)
+    CHOICES = [('containing','contained'),('intersect','intersecting')]
+    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect,label='')
     file_name = forms.CharField(label="file name")
 
 
 class SelectFiltersFormDuration(forms.Form):
     min_duration = forms.CharField(label="Minimum Duration", required=False)
     max_duration = forms.CharField(label="Maximum Duration", required=False)
-    days = forms.BooleanField(label="Days", required=False)
-    hours = forms.BooleanField(label="Hours", required=False)
-    minutes = forms.BooleanField(label="Minutes", required=False)
-    seconds = forms.BooleanField(label="Seconds", required=False)
+    CHOICES=[('days','days'),('hours','hours'),('minutes','minutes'),('seconds','seconds')]
+    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect,label='Type of input')
     file_name = forms.CharField(label="file name:")
 
 
 class SelectFiltersFormStartEnd(forms.Form):
+    CHOICES=[('start_act','start activity'),('end_act','end activity')]
     activity = forms.CharField(label="Activity")
-    start_checkbox = forms.BooleanField(label="start activity", required=False)
-    end_checkbox = forms.BooleanField(label="end activity", required=False)
-    frequent_checkbox = forms.BooleanField(label="most frequent", required=False)
+    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect,label='')
+    frequent_box = forms.BooleanField(label="Frequent", required=False)
     file_name = forms.CharField(label="file name:")
 
 
 class SelectFiltersFormAttributes(forms.Form):
     selected_attribute = forms.CharField(label="Attribute")
-    activity_name = forms.BooleanField(label="activity", required=False)
-    activity_resource = forms.BooleanField(label="resource", required=False)
-    activity_containing = forms.BooleanField(label="Containing", required=False)
-    activity_not_containing = forms.BooleanField(label="Not Containing", required=False)
+    CHOICE_ACT = [('activity','activity'),('resource','resource')]
+    CHOICE_CONT = [('contain_act','containing'),('not_contain_act','not containing')]
+    choice_act = forms.ChoiceField(choices=CHOICE_ACT, widget=forms.RadioSelect ,label='Type of input')
+    choice_cont = forms.ChoiceField(choices=CHOICE_CONT, widget=forms.RadioSelect,label='')
     file_name = forms.CharField(label="file name:")
 
 
 class SelectFiltersFormVariant(forms.Form):
-    CHOICES=[('contain','containing'),('not_contain','not Containing')]
+    CHOICES=[('contain','containing'),('not_contain','not containing')]
     selected_variant = forms.CharField()
-    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect, label='')
     file_name = forms.CharField(label="file name:")
 
-
-class SelectFiltersFormNumeric(forms.Form):
-    selected_number = forms.CharField(label="number:")
-    file_name = forms.CharField(label="file name:")
 
 
 class SelectFiltersFormCaseSize(forms.Form):
